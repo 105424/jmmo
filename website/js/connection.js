@@ -1,8 +1,12 @@
-function Connection()
+function Connection(callback)
 {
   connection = new WebSocket('ws://localhost:2000');
 
   connection.onopen = function(){ 
+
+    if(callback){
+      callback();
+    }
 
   }
   connection.onclose = function(){
@@ -27,12 +31,18 @@ function Connection()
       }       
       if(msg.type=="id")
       {
+
         console.log("--------ID--------");
         console.log("id:"+msg.user.id);
-        me = msg.user.id;
-        var user = new User(msg.user.id, msg.user.x, msg.user.y,msg.user.lvl,msg.user.hp);
 
-        users[user.id] = user;
+        playerId = msg.user.id;
+
+        var player = new Player(playerId,0,0);
+
+
+        //var user = new User(msg.user.id, msg.user.x, msg.user.y,msg.user.lvl,msg.user.hp);
+
+//        users[user.id] = user;
       }
       if(msg.type=="newUser")
       {

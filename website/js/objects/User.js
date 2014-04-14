@@ -4,7 +4,10 @@ var User = function(id){
 
   this.connection;
   this.intrs = []; // hold all intervals so they can be deleted
+
+
 }; 
+
 User.prototype.quit = function(){
 
   for (var i = 0 ; i < this.intrs;i++)
