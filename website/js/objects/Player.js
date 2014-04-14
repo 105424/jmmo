@@ -2,9 +2,19 @@ var Player = function(id,x,y){
 
   console.log("creating new Player");
 
+
   this.id = id;
+
   this.x = x;
   this.y = y;
+
+
+  this.maxSpd = 6;
+  this.spdX = 0;
+  this.spdY = 0;
+
+  this.color = getRandomColor();
+
   this.dom = $('<div class="player">');
 
   this.height = "100";
@@ -31,7 +41,10 @@ Player.prototype.addToWindow = function(parent,callback){
     if (xhr.readyState == 4){
       var svg = xhr.responseXML.documentElement;
       
+      $(svg).find("circle").attr("fill",parent.color);
+
       parent.dom.append(svg);
+      
       $("body").append(parent.dom);
 
       callback();
@@ -46,6 +59,10 @@ Player.prototype.update = function(){
 
   this.dom.css("left", this.x * widthRatio);
   this.dom.css("top", this.y * heightRatio);
+
+  this.x = this.x + this.spdX;
+  this.y = this.y + this.spdY;
+
 }
 
 Player.prototype.resize = function(){
@@ -57,20 +74,35 @@ Player.prototype.resize = function(){
 
 Player.prototype.move = function(direction, action){
   if(action == "start"){
-    this.intrs[direction] = setInterval(function(){
+    this.intrs[direction] = setInterval(function(direction){
       if(direction == "right"){
-        this.x += 2;
+        if(this.spdX < this.maxSpd)
+          this.spdX += 1;
       }else if (direction == "left"){
-        this.x -= 2;
+        if(this.spdX > this.maxSpd * -1)
+          this.spdX -= 1;
       }else if(direction == "up"){
-        this.y -= 2;
+        if(this.spdY > this.maxSpd * -1)
+          this.spdY -= 1;
       }else if (direction = "down"){
-        this.y += 2;
+        if(this.spdY < this.maxSpd)
+        this.spdY += 1;
       }
     }.bind(this),updateSpeed,direction);
 
   }else if (action == "stop"){
     clearInterval(this.intrs[direction]);
     this.intrs[direction] = null;
+
+    if(direction == "right"){
+      this.spdX = 0;
+    }else if (direction == "left"){
+      this.spdX = 0;
+    }else if(direction == "up"){
+      this.spdY = 0;
+    }else if (direction = "down"){
+      this.spdY = 0;
+    }
+
   }
 }

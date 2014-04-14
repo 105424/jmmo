@@ -38,6 +38,8 @@ function Connection(callback)
         playerId = msg.user.id;
 
         var player = new Player(playerId,0,0);
+        var player = new Player(playerId,100,100);
+        var player = new Player(playerId,50,50);
 
 
         //var user = new User(msg.user.id, msg.user.x, msg.user.y,msg.user.lvl,msg.user.hp);
