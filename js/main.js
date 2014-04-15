@@ -94,6 +94,13 @@ function getHashValue(key) {
 }
 
 function sendUTF(connection, msg){
+
+  if(useTimeStamps){
+    msg = JSON.parse(msg);
+    msg.timeStamp = new Date().getTime();
+    msg = JSON.stringify(msg);
+  }
+
   commandMap.commands.forEach(function(command, key){
     msg = msg.replace('"'+command+'"','"'+key+'"');
   });
@@ -105,6 +112,12 @@ function parseMsg(msg){
   commandMap.commands.forEach(function(command, key){
     msg = msg.replace('"'+key+'"','"'+command+'"')
   });
+
+  if(useTimeStamps){
+    temp = JSON.parse(msg);
+    delay = new Date().getTime() - temp.timeStamp;
+    console.log("msg delayed by: "+delay);
+  }
 
   return msg;
 }
