@@ -8,20 +8,24 @@ var Player = function(id,x,y){
   this.y = y;
 
 
-  this.maxSpd = 6;
+  this.maxSpd = standartPlayerMaxSpeed;
   this.spdX = 0;
   this.spdY = 0;
+
+  this.bulletSpeed = standartPlayerBulletSpeed;
 
   this.color = getRandomColor();
 
   this.dom = $('<div id="'+this.id+'" class="player">');
 
-  this.height = "100";
-  this.width = "100";
+  this.height = "60";
+  this.width = "60";
 
   this.resize();
 
   this.intrs = [];
+  this.intrs["move"] = [];
+  this.intrs["shoot"] = [];
 
   this.addToWindow(this,function(){
     
@@ -81,7 +85,7 @@ Player.prototype.move = function(direction, action, x, y){
   }
 
   if(action == "start"){
-    this.intrs[direction] = setInterval(function(direction){
+    this.intrs["move"][direction] = setInterval(function(direction){
       if(direction == "right"){
         if(this.spdX < this.maxSpd)
           this.spdX += 1;
@@ -98,8 +102,8 @@ Player.prototype.move = function(direction, action, x, y){
     }.bind(this),updateSpeed,direction);
 
   }else if (action == "stop"){
-    clearInterval(this.intrs[direction]);
-    this.intrs[direction] = null;
+    clearInterval(this.intrs["move"][direction]);
+    this.intrs["move"][direction] = null;
 
     if(direction == "right"){
       this.spdX = 0;
@@ -121,4 +125,34 @@ Player.prototype.quit = function(){
     clearInterval(this.intrs[i]);
   }
   delete objects[this.id];
+}
+
+Player.prototype.shoot = function(direction, action, x, y){
+
+  if(x != null)
+    this.x = x;
+  if(y != null)
+    this.y = y;
+
+  if(action == "start"){
+    this.intrs["shoot"][direction] = setInterval(function(direction){
+
+      offsetX = this.width / 2;
+      offsetY = this.height / 2;
+
+      if(direction == "up")
+        new Bullet(this.x + offsetX, this.y + offsetY, 0, -this.bulletSpeed, this.id);
+      if(direction == "right")
+        new Bullet(this.x + offsetX, this.y + offsetY, this.bulletSpeed, 0, this.id);
+      if(direction == "down")
+        new Bullet(this.x + offsetX, this.y + offsetY, 0, this.bulletSpeed, this.id);
+      if(direction == "left")
+        new Bullet(this.x + offsetX, this.y + offsetY, -this.bulletSpeed, 0, this.id);
+      
+    }.bind(this),100,direction);
+  }
+  if(action == "stop"){
+    clearInterval(this.intrs["shoot"][direction]);
+    this.intrs["shoot"][direction] = null;
+  }
 }
