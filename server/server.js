@@ -148,9 +148,17 @@ function getCommandMap(callback){
 }
 
 function sendUTF(connection, msg){
+
+  if(globals.useTimeStamps){
+    msg = JSON.parse(msg);
+    msg.timeStamp = new Date().getTime();
+    msg = JSON.stringify(msg);
+  }
+
   globals.commandMap.commands.forEach(function(command, key){
     msg = msg.replace('"'+command+'"','"'+key+'"');
   });
+
   connection.sendUTF(msg);
 }
 
@@ -158,5 +166,12 @@ function parseMsg(msg){
   globals.commandMap.commands.forEach(function(command, key){
     msg = msg.replace('"'+key+'"','"'+command+'"');
   });
+
+  if(globals.useTimeStamps){
+    temp = JSON.parse(msg);
+    delay = new Date().getTime() - temp.timeStamp;
+    console.log("msg delayed by: "+delay);
+  }
+
   return msg;
 }

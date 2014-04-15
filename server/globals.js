@@ -7,3 +7,5 @@ this.startHp = 1000;
 this.startLvl = 1;
 
 this.commandMap;
+
+this.useTimeStamps = true;
