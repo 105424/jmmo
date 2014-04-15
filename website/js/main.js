@@ -2,6 +2,11 @@ $(window).ready(function(){
   console.log("ready");
 
 
+  if(getHashValue("server")){
+    addres = getHashValue("server");
+  };
+
+
   if ('WebSocket' in window){
     Connection(function(){ //Starts the Connection (js/Connection)
       inputHandlers();
@@ -73,4 +78,11 @@ function getRandomColor() {
       color += letters[Math.round(Math.random() * 15)];
     }
     return color;
+}
+
+function getHashValue(key) {
+  if(location.hash)
+    return location.hash.match(new RegExp(key+'=([^&]*)'))[1];
+
+  return false;
 }
