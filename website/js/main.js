@@ -15,7 +15,6 @@ $(window).ready(function(){
 
   $(window).resize(resize);
 
-
 });
 
 function isJson(str) {
@@ -54,15 +53,15 @@ function inputHandlers(){
       if(e.keyCode == 83) move('down','stop');
       if(e.keyCode == 68) move('right','stop');  
   }); 
+
 }
 
 function move(direction, action){
-
-  console.log(objects[playerId].intrs[direction]);
-
   if(action == 'start' && objects[playerId].intrs[direction] == null){
+    connection.send('{"type":"move","action":"'+action+'","direction":"'+direction+'","position":{"x":'+objects[playerId].x+',"y":'+objects[playerId].y+'} }');
     objects[playerId].move(direction, action);
   }else if(action == "stop"){
+    connection.send('{"type":"move","action":"'+action+'","direction":"'+direction+'","position":{"x":'+objects[playerId].x+',"y":'+objects[playerId].y+'} }');
     objects[playerId].move(direction, action);
   }
 }

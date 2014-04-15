@@ -1,6 +1,9 @@
 function Connection(callback)
 {
-  connection = new WebSocket('ws://localhost:2000');
+  
+  console.log("connection to: "+'ws://'+addres+':'+port);
+  connection = new WebSocket('ws://'+addres+':'+port);
+
 
   connection.onopen = function(){ 
 
@@ -23,64 +26,70 @@ function Connection(callback)
       var msg = JSON.parse(message.data);
       
       if(msg.type=="allUsers"){
-        for (var i in msg.users)
-        {         
-          var user = new User(msg.users[i].id, msg.users[i].x, msg.users[i].y+100);
-          users[msg.users[i].id] = user;
-        }
+
+        msg.users.forEach(function(user){
+
+          console.log(user);
+
+          new Player(user.id, user.x, user.y)
+        });
+
       }       
       if(msg.type=="id")
       {
+
+
+        console.log(msg.user);
 
         console.log("--------ID--------");
         console.log("id:"+msg.user.id);
 
         playerId = msg.user.id;
 
-        var player = new Player(playerId,0,0);
-        var player = new Player(playerId,100,100);
-        var player = new Player(playerId,50,50);
 
 
-        //var user = new User(msg.user.id, msg.user.x, msg.user.y,msg.user.lvl,msg.user.hp);
 
-//        users[user.id] = user;
+        new Player(playerId,msg.user.x,msg.user.y);
       }
       if(msg.type=="newUser")
       {
-        console.log("--------New User--------");
-        console.log("New User:"+msg.user.id);
-        var user = new User(msg.user.id, msg.user.x, msg.user.y);
-        users[user.id] = user;
+        if(msg.user.id != playerId){
+          console.log("--------New Player--------");
+          console.log("New Player:"+msg.user.id);
+          console.log(msg.user);
+
+          new Player(msg.user.id, msg.user.x, msg.user.y);
+        }
       } 
       if(msg.type=="userQuit")
       {
-        console.log(msg.user);
-        users[msg.user].quit();
+        console.log("------Delete Player -----");
+        console.log("Deleted Player:"+msg.user.id);
+        objects[msg.user.id].quit();
       }
       if(msg.type=="move")
       {
-        users[msg.id].move(msg.direction, msg.action, msg.position.x ,msg.position.y)     
+        objects[msg.id].move(msg.direction, msg.action, msg.position.x ,msg.position.y)     
       }
-      if(msg.type=="click")
+/*      if(msg.type=="click")
       {
         if(msg.action=="swordStorm") users[msg.id].swordStorm(20, msg.direction, msg.position.x, msg.position.y); 
         if(msg.action=="bang") users[msg.id].bang(msg.position.x, msg.position.y); 
         if(msg.action=="teleport") users[msg.id].teleport(msg.position.x, msg.position.y); 
-      }
+      }*/
       if(msg.type=="hit")
       {
-        users[msg.user].hit(msg.dmg,msg.hpLeft);
+       // objects[msg.user.id].hit(msg.dmg, msg.hpLeft);
       }
       if(msg.type=="chat")
       {
-        var text = msg.id+": "+msg.text;
+/*        var text = msg.id+": "+msg.text;
         chatLog.push(text);
-        $("#chat").append("<p class='chat'>"+text+"</p>");  
+        $("#chat").append("<p class='chat'>"+text+"</p>");  */
       }
       if(msg.type=="death")
       {
-        users[msg.user].die();
+        objects[msg.user.id].die();
       }     
     }else console.log("invallid json: "+message.data);
   }

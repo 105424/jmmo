@@ -15,7 +15,7 @@ var Player = function(id,x,y){
 
   this.color = getRandomColor();
 
-  this.dom = $('<div class="player">');
+  this.dom = $('<div id="'+this.id+'" class="player">');
 
   this.height = "100";
   this.width = "100";
@@ -72,7 +72,15 @@ Player.prototype.resize = function(){
   this.dom.css("top", this.y * heightRatio);
 }
 
-Player.prototype.move = function(direction, action){
+Player.prototype.move = function(direction, action, x, y){
+
+  if(x != undefined){
+    this.x = x; 
+  }
+  if(y != undefined){
+    this.y = y;
+  }
+
   if(action == "start"){
     this.intrs[direction] = setInterval(function(direction){
       if(direction == "right"){
@@ -105,4 +113,13 @@ Player.prototype.move = function(direction, action){
     }
 
   }
+}
+
+Player.prototype.quit = function(){
+  $("#"+this.id).remove();
+  for (var i = 0 ; i < this.intrs;i++)
+  {
+    clearInterval(this.intrs[i]);
+  }
+  delete objects[this.id];
 }

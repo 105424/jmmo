@@ -20,22 +20,33 @@ function originIsAllowed(origin) {
   return true;
 }
 
-var User = function(){
+ var User = function(){
   this.connection;
+  this.x;
+  this.y;
   this.id;
+  
+  this.hp;
+  this.lvl;
 }; 
+
 
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
-      console.log(' Connection from origin ' + request.origin + ' rejected.');
+      console.log('Connection from origin ' + request.origin + ' rejected.');
       return;
     }
   
   var user = new User();
   user.connection = request.accept(null, request.origin); 
   
+  user.x = globals.startX;
+  user.y = globals.startY;
+  user.lvl = globals.startLvl;
+  user.hp = globals.startHp;
+
   var a = false;
   while(a == false)
   {
@@ -49,7 +60,7 @@ wsServer.on('request', function(request) {
   
   users.push(user);
   
-  user.connection.sendUTF('{"type":"id","user":{"id":'+user.id+'}}');
+  user.connection.sendUTF('{"type":"id","user":{"id":'+user.id+',"lvl":1,"hp":1000,"x":'+user.x+',"y":'+user.y+'}}');  
   
   var all  = {"type":"allUsers","users":[]};
   for (var i=0; i < users.length; i++) {
@@ -70,15 +81,26 @@ wsServer.on('request', function(request) {
     {
       var msg = JSON.parse(message.utf8Data);
 
+      if(msg.type=="move")
+      {
+        console.log(user.id+" move action: "+msg.action+" to: "+msg.direction);
+        toAll(
+          '{"type":"move","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
+          user.id
+        );
+        user.x = msg.position.x;
+        user.y = msg.position.y;
+      }
+
+
     }else console.log("invalid json: "+message.utf8Data);
   }
   });
   user.connection.on('close', function(reasonCode, description) {
-      console.log('User' + user.id + ' disconnected.');
-  toAll('{"type":"userQuit","user":'+user.id+'}');
-  for (var i=0; i < users.length; i++) {
-    if(users[i].id==user.id) users.splice(i,1);
-  }
+    toAll('{"type":"userQuit","user":'+user.id+'}');
+    for (var i=0; i < users.length; i++) {
+      if(users[i].id==user.id) users.splice(i,1);
+    }
   }); 
 });
 

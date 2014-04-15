@@ -1,5 +1,5 @@
 var port = 2000;
-var addres = "localhost";
+var addres = "145.24.243.119";
 
 var users = [];
 
