@@ -8,8 +8,14 @@ $(window).ready(function(){
 
 
   if ('WebSocket' in window){
-    Connection(function(){ //Starts the Connection (js/Connection)
-      inputHandlers();
+
+    getCommandMap(function(map){
+      commandMap = map;
+
+      Connection(function(){ //Starts the Connection (js/Connection)
+        inputHandlers();
+      });
+      
     });
 
   } else {
@@ -85,4 +91,26 @@ function getHashValue(key) {
     return location.hash.match(new RegExp(key+'=([^&]*)'))[1];
 
   return false;
+}
+
+function sendUTF(connection, msg){
+  commandMap.commands.forEach(function(command, key){
+    msg = msg.replace('"'+command+'"','"'+key+'"');
+  });
+
+  connection.sendUTF(msg);
+}
+
+function parseMsg(msg){
+  commandMap.commands.forEach(function(command, key){
+    msg = msg.replace('"'+key+'"','"'+command+'"')
+  });
+
+  return msg;
+}
+
+function getCommandMap(callback){
+  $.get('js/commandMap.json',function(data){
+    callback(data);
+  });
 }

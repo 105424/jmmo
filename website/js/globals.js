@@ -18,3 +18,5 @@ var heightRatio;
 var updateSpeed = 10;
 
 var playerId;
+
+var commandMap;

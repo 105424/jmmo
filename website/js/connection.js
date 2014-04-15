@@ -23,23 +23,18 @@ function Connection(callback)
     console.log(message.data);
     if(isJson(message.data))
     {
-      var msg = JSON.parse(message.data);
+      var msg = parseMsg(message.data);
+      msg = JSON.parse(msg);
       
       if(msg.type=="allUsers"){
 
         msg.users.forEach(function(user){
-
-          console.log(user);
-
           new Player(user.id, user.x, user.y)
         });
 
       }       
       if(msg.type=="id")
       {
-
-
-        console.log(msg.user);
 
         console.log("--------ID--------");
         console.log("id:"+msg.user.id);

@@ -2,7 +2,6 @@ var Player = function(id,x,y){
 
   console.log("creating new Player");
 
-
   this.id = id;
 
   this.x = x;
