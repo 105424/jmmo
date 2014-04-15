@@ -8,6 +8,7 @@ $(window).ready(function(){
 
 
   if ('WebSocket' in window){
+<<<<<<< HEAD
 
     getCommandMap(function(map){
       commandMap = map;
@@ -16,6 +17,10 @@ $(window).ready(function(){
         inputHandlers();
       });
       
+=======
+    Connection(function(){ //Starts the Connection (js/Connection)
+      inputHandlers();
+>>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
     });
 
   } else {
@@ -91,6 +96,7 @@ function getHashValue(key) {
     return location.hash.match(new RegExp(key+'=([^&]*)'))[1];
 
   return false;
+<<<<<<< HEAD
 }
 
 function sendUTF(connection, msg){
@@ -113,4 +119,6 @@ function getCommandMap(callback){
   $.get('js/commandMap.json',function(data){
     callback(data);
   });
+=======
+>>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
 }
