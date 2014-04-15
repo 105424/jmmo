@@ -105,7 +105,7 @@ wsServer.on('request', function(request) {
   }
 });
 user.connection.on('close', function(reasonCode, description) {
-  toAll('{"type":"userQuit","user":'+user.id+'}');
+  toAll('{"type":"userQuit","id":'+user.id+'}');
     for (var i=0; i < users.length; i++) {
       if(users[i].id==user.id) users.splice(i,1);
     }

@@ -58,9 +58,12 @@ function Connection(callback)
       } 
       if(msg.type=="userQuit")
       {
+
+        console.log(msg);
+
         console.log("------Delete Player -----");
-        console.log("Deleted Player:"+msg.user.id);
-        objects[msg.user.id].quit();
+        console.log("Deleted Player:"+msg.id);
+        objects[msg.id].quit();
       }
       if(msg.type=="move")
       {
