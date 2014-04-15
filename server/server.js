@@ -100,6 +100,16 @@ wsServer.on('request', function(request) {
         user.y = msg.position.y;
       }
 
+      if(msg.type == "shoot")
+      {
+        toAll(
+          '{"type":"shoot","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
+          user.id
+        );
+        user.x = msg.position.x;
+        user.y = msg.position.y;
+      }
+
 
     }else console.log("invalid json: "+message.utf8Data);
   }

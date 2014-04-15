@@ -49,34 +49,6 @@ function resize(){
   });
 }
 
-function inputHandlers(){
-
-  $("body").keydown(function(e) {
-    if(e.keyCode == 87) move('up', 'start');
-    if(e.keyCode == 65) move('left','start');
-    if(e.keyCode == 83) move('down','start');
-    if(e.keyCode == 68) move('right','start');  
-  }); 
-
-  $("body").keyup(function(e) {
-      if(e.keyCode == 87) move('up', 'stop');
-      if(e.keyCode == 65) move('left','stop');
-      if(e.keyCode == 83) move('down','stop');
-      if(e.keyCode == 68) move('right','stop');  
-  }); 
-
-}
-
-function move(direction, action){
-  if(action == 'start' && objects[playerId].intrs[direction] == null){
-    connection.send('{"type":"move","action":"'+action+'","direction":"'+direction+'","position":{"x":'+objects[playerId].x+',"y":'+objects[playerId].y+'} }');
-    objects[playerId].move(direction, action);
-  }else if(action == "stop"){
-    connection.send('{"type":"move","action":"'+action+'","direction":"'+direction+'","position":{"x":'+objects[playerId].x+',"y":'+objects[playerId].y+'} }');
-    objects[playerId].move(direction, action);
-  }
-}
-
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -93,7 +65,7 @@ function getHashValue(key) {
   return false;
 }
 
-function sendUTF(connection, msg){
+function sendUTF(msg){
 
   if(useTimeStamps){
     msg = JSON.parse(msg);
@@ -105,7 +77,7 @@ function sendUTF(connection, msg){
     msg = msg.replace('"'+command+'"','"'+key+'"');
   });
 
-  connection.sendUTF(msg);
+  connection.send(msg);
 }
 
 function parseMsg(msg){

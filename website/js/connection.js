@@ -41,9 +41,6 @@ function Connection(callback)
 
         playerId = msg.user.id;
 
-
-
-
         new Player(playerId,msg.user.x,msg.user.y);
       }
       if(msg.type=="newUser")
@@ -69,6 +66,11 @@ function Connection(callback)
       {
         objects[msg.id].move(msg.direction, msg.action, msg.position.x ,msg.position.y)     
       }
+      if(msg.type == "shoot")
+      {
+        objects[msg.id].shoot(msg.direction, msg.action, msg.position.x, msg.position.y)
+      }
+
 /*      if(msg.type=="click")
       {
         if(msg.action=="swordStorm") users[msg.id].swordStorm(20, msg.direction, msg.position.x, msg.position.y); 

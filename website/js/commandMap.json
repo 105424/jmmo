@@ -17,6 +17,7 @@
     "down",
     "left",
     "position",
-    "move"
+    "move",
+    "timeStamp"
   ]
 }
