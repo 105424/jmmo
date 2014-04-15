@@ -2,10 +2,6 @@ var Player = function(id,x,y){
 
   console.log("creating new Player");
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
   this.id = id;
 
   this.x = x;

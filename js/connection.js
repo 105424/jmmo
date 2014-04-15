@@ -23,22 +23,12 @@ function Connection(callback)
     console.log(message.data);
     if(isJson(message.data))
     {
-<<<<<<< HEAD
       var msg = parseMsg(message.data);
       msg = JSON.parse(msg);
-=======
-      var msg = JSON.parse(message.data);
->>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
       
       if(msg.type=="allUsers"){
 
         msg.users.forEach(function(user){
-<<<<<<< HEAD
-=======
-
-          console.log(user);
-
->>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
           new Player(user.id, user.x, user.y)
         });
 
@@ -46,12 +36,6 @@ function Connection(callback)
       if(msg.type=="id")
       {
 
-<<<<<<< HEAD
-=======
-
-        console.log(msg.user);
-
->>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
         console.log("--------ID--------");
         console.log("id:"+msg.user.id);
 
@@ -74,18 +58,12 @@ function Connection(callback)
       } 
       if(msg.type=="userQuit")
       {
-<<<<<<< HEAD
 
         console.log(msg);
 
         console.log("------Delete Player -----");
         console.log("Deleted Player:"+msg.id);
         objects[msg.id].quit();
-=======
-        console.log("------Delete Player -----");
-        console.log("Deleted Player:"+msg.user.id);
-        objects[msg.user.id].quit();
->>>>>>> 9536d71f8b1f6a13863165623d04e864a3b702ba
       }
       if(msg.type=="move")
       {
