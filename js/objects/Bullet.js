@@ -47,7 +47,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 Bullet.prototype.addToWindow = function(parent,callback){
 
   var xhr = new XMLHttpRequest;
-  xhr.open('get',"images/girlface.svg",true);
+  xhr.open('get',"images/bullet.svg",true);
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4){
       var svg = xhr.responseXML.documentElement;
