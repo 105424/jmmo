@@ -1,7 +1,5 @@
 var Bullet = function(x, y, spdX, spdY, shotee){
 
-  console.log("creating new Bullet");
-
   this.id = 42;
 
   var isUniquId = false;

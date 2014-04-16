@@ -82,7 +82,10 @@ function sendUTF(msg){
 
 function parseMsg(msg){
   commandMap.commands.forEach(function(command, key){
-    msg = msg.replace('"'+key+'"','"'+command+'"')
+    var find = '"'+key+'"';
+    var re = new RegExp(find, 'g');
+
+    msg = msg.replace(re,'"'+command+'"');
   });
 
   if(useTimeStamps){

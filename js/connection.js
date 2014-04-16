@@ -23,74 +23,80 @@ function Connection(callback)
     console.log(message.data);
     if(isJson(message.data))
     {
-      var msg = parseMsg(message.data);
-      msg = JSON.parse(msg);
-      
-      if(msg.type=="allUsers"){
+      msgArray = JSON.parse(parseMsg(message.data));
 
-        msg.users.forEach(function(user){
-          new Player(user.id, user.x, user.y)
-        });
+      for (key in msgArray){
+        
+        msg = msgArray[key];
 
-      }       
-      if(msg.type=="id")
-      {
+        if(msg.type=="allUsers"){
 
-        console.log("--------ID--------");
-        console.log("id:"+msg.user.id);
+          msg.users.forEach(function(user){
+            new Player(user.id, user.x, user.y)
+          });
 
-        playerId = msg.user.id;
+        }       
+        if(msg.type=="id")
+        {
 
-        new Player(playerId,msg.user.x,msg.user.y);
-      }
-      if(msg.type=="newUser")
-      {
-        if(msg.user.id != playerId){
-          console.log("--------New Player--------");
-          console.log("New Player:"+msg.user.id);
-          console.log(msg.user);
+          console.log("--------ID--------");
+          console.log("id:"+msg.user.id);
 
-          new Player(msg.user.id, msg.user.x, msg.user.y);
+          playerId = msg.user.id;
+
+          new Player(playerId,msg.user.x,msg.user.y);
         }
-      } 
-      if(msg.type=="userQuit")
-      {
+        if(msg.type=="newUser")
+        {
+          if(msg.user.id != playerId){
+            console.log("--------New Player--------");
+            console.log("New Player:"+msg.user.id);
+            console.log(msg.user);
 
-        console.log(msg);
+            new Player(msg.user.id, msg.user.x, msg.user.y);
+          }
+        } 
+        if(msg.type=="userQuit")
+        {
 
-        console.log("------Delete Player -----");
-        console.log("Deleted Player:"+msg.id);
-        objects[msg.id].quit();
-      }
-      if(msg.type=="move")
-      {
-        objects[msg.id].move(msg.direction, msg.action, msg.position.x ,msg.position.y)     
-      }
-      if(msg.type == "shoot")
-      {
-        objects[msg.id].shoot(msg.direction, msg.action, msg.position.x, msg.position.y)
-      }
+          console.log(msg);
 
-/*      if(msg.type=="click")
-      {
-        if(msg.action=="swordStorm") users[msg.id].swordStorm(20, msg.direction, msg.position.x, msg.position.y); 
-        if(msg.action=="bang") users[msg.id].bang(msg.position.x, msg.position.y); 
-        if(msg.action=="teleport") users[msg.id].teleport(msg.position.x, msg.position.y); 
-      }*/
-      if(msg.type=="hit")
-      {
-       // objects[msg.user.id].hit(msg.dmg, msg.hpLeft);
+          console.log("------Delete Player -----");
+          console.log("Deleted Player:"+msg.id);
+          objects[msg.id].quit();
+        }
+        if(msg.type=="move")
+        {
+          objects[msg.id].move(msg.direction, msg.action, msg.position.x ,msg.position.y)     
+        }
+        if(msg.type == "shoot")
+        {
+          objects[msg.id].shoot(msg.direction, msg.action, msg.position.x, msg.position.y)
+        }
+
+  /*      if(msg.type=="click")
+        {
+          if(msg.action=="swordStorm") users[msg.id].swordStorm(20, msg.direction, msg.position.x, msg.position.y); 
+          if(msg.action=="bang") users[msg.id].bang(msg.position.x, msg.position.y); 
+          if(msg.action=="teleport") users[msg.id].teleport(msg.position.x, msg.position.y); 
+        }*/
+        if(msg.type=="hit")
+        {
+         // objects[msg.user.id].hit(msg.dmg, msg.hpLeft);
+        }
+        if(msg.type=="chat")
+        {
+  /*        var text = msg.id+": "+msg.text;
+          chatLog.push(text);
+          $("#chat").append("<p class='chat'>"+text+"</p>");  */
+        }
+        if(msg.type=="death")
+        {
+          objects[msg.user.id].die();
+        }     
+
+
       }
-      if(msg.type=="chat")
-      {
-/*        var text = msg.id+": "+msg.text;
-        chatLog.push(text);
-        $("#chat").append("<p class='chat'>"+text+"</p>");  */
-      }
-      if(msg.type=="death")
-      {
-        objects[msg.user.id].die();
-      }     
     }else console.log("invallid json: "+message.data);
   }
 }
