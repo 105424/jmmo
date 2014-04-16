@@ -1,7 +1,4 @@
 function initCanvas(){
-
-  var connection = Connection();
-
   canvas = document.getElementById("mainCanvas");
 
   if( canvas.getContext )
