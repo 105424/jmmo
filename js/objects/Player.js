@@ -16,12 +16,11 @@ var Player = function(id,x,y){
 
   this.color = getRandomColor();
 
-  this.dom = $('<div id="'+this.id+'" class="player">');
+  this.dom = document.createElementNS("http://www.w3.org/2000/svg","g");
+  this.dom.setAttribute("id",this.id);
 
   this.height = "60";
   this.width = "60";
-
-  this.resize();
 
   this.intrs = [];
   this.intrs["move"] = [];
@@ -30,7 +29,6 @@ var Player = function(id,x,y){
   this.addToWindow(this,function(){
     
     objects[this.id] = this;
-
     this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
   
   }.bind(this));
@@ -43,12 +41,13 @@ Player.prototype.addToWindow = function(parent,callback){
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4){
       var svg = xhr.responseXML.documentElement;
-      
-      $(svg).find("circle").attr("fill",parent.color);
 
-      parent.dom.append(svg);
+      $(parent.dom.setAttribute("fill",getRandomColor()));
+
+      $(parent.dom).append($(svg).children());
+      parent.resize();
       
-      $("body").append(parent.dom);
+      $("#main").append(parent.dom);
 
       callback();
     }
@@ -60,8 +59,11 @@ Player.prototype.addToWindow = function(parent,callback){
 Player.prototype.update = function(){
   //this.x += 1;
 
-  this.dom.css("left", this.x * widthRatio);
-  this.dom.css("top", this.y * heightRatio);
+/*  this.dom.setAttribute("x", this.x * widthRatio);
+  this.dom.setAttribute("y", this.y * heightRatio);*/
+
+
+  this.dom.setAttribute("transform","translate("+this.x+","+this.y+")");
 
   this.x = this.x + this.spdX;
   this.y = this.y + this.spdY;
@@ -69,10 +71,10 @@ Player.prototype.update = function(){
 }
 
 Player.prototype.resize = function(){
-  this.dom.css("width", this.width * widthRatio);
+/*  this.dom.css("width", this.width * widthRatio);
   this.dom.css("height", this.height * heightRatio);
   this.dom.css("left", this.x * widthRatio);
-  this.dom.css("top", this.y * heightRatio);
+  this.dom.css("top", this.y * heightRatio);*/
 }
 
 Player.prototype.move = function(direction, action, x, y){
@@ -88,16 +90,16 @@ Player.prototype.move = function(direction, action, x, y){
     this.intrs["move"][direction] = setInterval(function(direction){
       if(direction == "right"){
         if(this.spdX < this.maxSpd)
-          this.spdX += 1;
+          this.spdX += standartPlayerAccSpeed;
       }else if (direction == "left"){
         if(this.spdX > this.maxSpd * -1)
-          this.spdX -= 1;
+          this.spdX -= standartPlayerAccSpeed;
       }else if(direction == "up"){
         if(this.spdY > this.maxSpd * -1)
-          this.spdY -= 1;
+          this.spdY -= standartPlayerAccSpeed;
       }else if (direction = "down"){
         if(this.spdY < this.maxSpd)
-        this.spdY += 1;
+        this.spdY += standartPlayerAccSpeed;
       }
     }.bind(this),updateSpeed,direction);
 
@@ -120,10 +122,9 @@ Player.prototype.move = function(direction, action, x, y){
 
 Player.prototype.quit = function(){
   $("#"+this.id).remove();
-  for (var i = 0 ; i < this.intrs;i++)
-  {
-    clearInterval(this.intrs[i]);
-  }
+  
+  clearIntertvalArray(this.intrs);
+
   delete objects[this.id];
 }
 
@@ -151,8 +152,10 @@ Player.prototype.shoot = function(direction, action, x, y){
       
     }.bind(this),100,direction);
   }
+
   if(action == "stop"){
     clearInterval(this.intrs["shoot"][direction]);
     this.intrs["shoot"][direction] = null;
   }
+
 }

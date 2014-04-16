@@ -16,10 +16,11 @@ var standartHeight = 1080;
 var widthRatio;
 var heightRatio;
 
-var standartPlayerMaxSpeed = 5;
-var standartPlayerBulletSpeed = 15;
+var standartPlayerMaxSpeed = 20;
+var standartPlayerBulletSpeed = 30;
+var standartPlayerAccSpeed = 2;
 
-var updateSpeed = 10;
+var updateSpeed = 20;
 
 var playerId;
 var commandMap;
