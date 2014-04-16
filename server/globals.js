@@ -9,3 +9,5 @@ this.startLvl = 1;
 this.commandMap;
 
 this.useTimeStamps = true;
+
+this.stackSpeed = 50;

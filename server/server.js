@@ -7,6 +7,8 @@ var globals = require('./globals');
 
 var users = globals.users;
 
+var messageStack = [];
+
 var User = function(){
   this.connection;
   this.x;
@@ -16,7 +18,6 @@ var User = function(){
   this.hp;
   this.lvl;
 }; 
-
 
 getCommandMap(function(map){
   globals.commandMap = map;
@@ -29,6 +30,7 @@ function originIsAllowed(origin) {
 
 server.listen(globals.port, function() {
     console.log(' Server is listening on port 2000');
+    setStackInterval();
 });
 
 wsServer = new WebSocketServer({
@@ -169,19 +171,46 @@ function sendUTF(connection, msg){
     msg = msg.replace('"'+command+'"','"'+key+'"');
   });
 
-  connection.sendUTF(msg);
+  addToStack(connection, msg);
 }
 
 function parseMsg(msg){
   globals.commandMap.commands.forEach(function(command, key){
-    msg = msg.replace('"'+key+'"','"'+command+'"');
+
+    var find = '"'+key+'"';
+    var re = new RegExp(find, 'g');
+
+    msg = msg.replace(re,'"'+command+'"');
   });
 
-  if(globals.useTimeStamps){
-    temp = JSON.parse(msg);
-    delay = new Date().getTime() - temp.timeStamp;
-    console.log("msg delayed by: "+delay);
+  return msg;
+}
+
+
+function setStackInterval(){
+  setInterval(emptyStack, globals.stackSpeed);
+}
+
+function addToStack(connection, msg){
+
+  if(messageStack[connection] == null)
+    messageStack[connection] = {"connection":connection, "msgs": []};
+
+  messageStack[connection].msgs.push(msg);
+}
+
+function emptyStack(){
+
+  for (stackKey in messageStack){
+
+    message = [];
+    messageStack[stackKey].msgs.forEach(function(msg){
+      message.push(JSON.parse(msg));
+    });
+
+    messageStack[stackKey].connection.sendUTF(JSON.stringify(message));
   }
 
-  return msg;
+  messageStack = [];
+
 }
