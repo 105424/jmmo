@@ -4,9 +4,10 @@ var Player = function(id,x,y){
 
   this.id = id;
 
+  this.radius = 20;
+
   this.x = x;
   this.y = y;
-
 
   this.maxSpd = standartPlayerMaxSpeed;
   this.spdX = 0;
@@ -18,10 +19,7 @@ var Player = function(id,x,y){
 
   this.dom = document.createElementNS("http://www.w3.org/2000/svg","g");
   this.dom.setAttribute("id",this.id);
-
-  this.height = "60";
-  this.width = "60";
-
+  
   this.intrs = [];
   this.intrs["move"] = [];
   this.intrs["shoot"] = [];
@@ -45,7 +43,6 @@ Player.prototype.addToWindow = function(parent,callback){
       $(parent.dom.setAttribute("fill",getRandomColor()));
 
       $(parent.dom).append($(svg).children());
-      parent.resize();
       
       $("#main").append(parent.dom);
 
@@ -57,24 +54,12 @@ Player.prototype.addToWindow = function(parent,callback){
 }
 
 Player.prototype.update = function(){
-  //this.x += 1;
-
-/*  this.dom.setAttribute("x", this.x * widthRatio);
-  this.dom.setAttribute("y", this.y * heightRatio);*/
-
 
   this.dom.setAttribute("transform","translate("+this.x+","+this.y+")");
 
   this.x = this.x + this.spdX;
   this.y = this.y + this.spdY;
 
-}
-
-Player.prototype.resize = function(){
-/*  this.dom.css("width", this.width * widthRatio);
-  this.dom.css("height", this.height * heightRatio);
-  this.dom.css("left", this.x * widthRatio);
-  this.dom.css("top", this.y * heightRatio);*/
 }
 
 Player.prototype.move = function(direction, action, x, y){
@@ -138,17 +123,14 @@ Player.prototype.shoot = function(direction, action, x, y){
   if(action == "start"){
     this.intrs["shoot"][direction] = setInterval(function(direction){
 
-      offsetX = this.width / 2;
-      offsetY = this.height / 2;
-
       if(direction == "up")
-        new Bullet(this.x + offsetX, this.y + offsetY, 0, -this.bulletSpeed, this.id);
+        new Bullet(this.x, this.y, 0, -this.bulletSpeed, this.id);
       if(direction == "right")
-        new Bullet(this.x + offsetX, this.y + offsetY, this.bulletSpeed, 0, this.id);
+        new Bullet(this.x, this.y, this.bulletSpeed, 0, this.id);
       if(direction == "down")
-        new Bullet(this.x + offsetX, this.y + offsetY, 0, this.bulletSpeed, this.id);
+        new Bullet(this.x, this.y, 0, this.bulletSpeed, this.id);
       if(direction == "left")
-        new Bullet(this.x + offsetX, this.y + offsetY, -this.bulletSpeed, 0, this.id);
+        new Bullet(this.x, this.y, -this.bulletSpeed, 0, this.id);
       
     }.bind(this),100,direction);
   }

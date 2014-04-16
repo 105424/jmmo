@@ -13,7 +13,12 @@ var map = globals.map;
     y altijd deelbaat door 1080
 
   {
-    "x,y":[ objects ],
+    "x,y":{
+     "users": [],
+     "npcs": [],
+     "enemies" : []
+    }
+
     "x,y":[ objects ],
     "x,y":[ objects ],
     "x,y":[ objects ],
@@ -27,6 +32,14 @@ var map = globals.map;
 
 var messageStack = {};
 
+var Map = function(x,y){
+  this.x = x;
+  this.y = y;
+
+  this.users;
+  this.npcs;
+  this.enemies;
+}
 
 var User = function(){
   
@@ -43,6 +56,8 @@ var User = function(){
 getCommandMap(function(map){
   globals.commandMap = map;
 });
+
+autoGenerateMap();
 
 function originIsAllowed(origin) {
   // put logic here to detect whether the specified origin is allowed.
@@ -119,6 +134,7 @@ wsServer.on('request', function(request) {
             '{"type":"move","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
             user.id
           );
+
           user.x = msg.position.x;
           user.y = msg.position.y;
         }
@@ -132,6 +148,22 @@ wsServer.on('request', function(request) {
           user.x = msg.position.x;
           user.y = msg.position.y;
         }
+
+        if(msg.type == "getMap")
+        {
+
+          if( (msg.x % 1920) != 0 && (msg.y % 1080) != 0 ){
+            var mapData = map[msg.x+","+msg.y];
+            
+            var message = { "type":"mapData" };
+            message.map = mapData;
+
+            sendUTF(JSON.stringify(message));
+
+          }else{
+            console.log("The requested cordinates where not a map cordinate. x: "+msg.x+" y:"+msg.y);
+          }
+        }        
       } else console.log("invalid json: "+message.utf8Data);
     }
   });
@@ -245,4 +277,16 @@ function emptyStack(){
 
 function emptyStackFromUser(userId){
   delete messageStack[userId];
+}
+
+function autoGenerateMap(){
+  
+  for (var y = -20; y < 20; y++) {
+    for (var x = -20; x < 20; x++) { 
+      map[x*1920+","+y*1080] = new Map(x*1920,y*1080);
+    }
+  }
+
+  console.log(map);
+
 }

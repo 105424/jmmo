@@ -11,9 +11,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
     }
   }
 
-
-  this.height = "200";
-  this.width = "200";
+  this.radius = 10;
 
   this.x = x;
   this.y = y;
@@ -26,7 +24,6 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 
   this.ownerId = shotee;
 
-  this.maxSpd = standartPlayerMaxSpeed;
   this.spdX = spdX;
   this.spdY = spdY;
 
@@ -50,7 +47,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 Bullet.prototype.addToWindow = function(parent,callback){
 
   var xhr = new XMLHttpRequest;
-  xhr.open('get',"images/circle.svg",true);
+  xhr.open('get',"images/girlface.svg",true);
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4){
       var svg = xhr.responseXML.documentElement;
@@ -67,9 +64,6 @@ Bullet.prototype.addToWindow = function(parent,callback){
 
 
 Bullet.prototype.update = function(){
-/*
-  this.dom.css("left", this.x * widthRatio);
-  this.dom.css("top", this.y * heightRatio);*/
 
   this.dom.setAttribute("transform","translate("+this.x+","+this.y+")");
 
@@ -80,13 +74,6 @@ Bullet.prototype.update = function(){
     this.quit();
   } 
 
-}
-
-Bullet.prototype.resize = function(){
-/*  this.dom.css("width", this.width * widthRatio);
-  this.dom.css("height", this.height * heightRatio);
-  this.dom.css("left", this.x * widthRatio);
-  this.dom.css("top", this.y * heightRatio);*/
 }
 
 Bullet.prototype.quit = function(){

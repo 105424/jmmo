@@ -1,11 +1,9 @@
 $(window).ready(function(){
   console.log("ready");
 
-
   if(getHashValue("server")){
     addres = getHashValue("server");
   };
-
 
   if ('WebSocket' in window){
 
@@ -14,6 +12,7 @@ $(window).ready(function(){
 
       Connection(function(){ //Starts the Connection (js/Connection)
         inputHandlers();
+        setInterval(update, updateSpeed);
       });
       
     });
@@ -23,9 +22,7 @@ $(window).ready(function(){
   }
 
   resize();
-
   $(window).resize(resize);
-
 });
 
 function isJson(str) {
@@ -41,12 +38,8 @@ function resize(){
   $('body').width(document.body.clientWidth);
   $('body').height(document.body.clientHeight);
 
-  widthRatio = document.body.clientWidth / standartWidth;
-  heightRatio = document.body.clientHeight / standartHeight;
-
-  objects.forEach(function(object){
-    object.resize();
-  });
+/*  widthRatio = document.body.clientWidth / standartWidth;
+  heightRatio = document.body.clientHeight / standartHeight;*/
 }
 
 function getRandomColor() {
@@ -109,4 +102,11 @@ function clearIntertvalArray(array){
   
   }
 
+}
+
+function update(array){
+  if(playerId > 0 ){
+    offsetX = objects[playerId].x;
+    offsetY = objects[playerId].y;
+  }
 }
