@@ -99,3 +99,17 @@ function getCommandMap(callback){
     callback(data);
   });
 }
+
+function clearIntertvalArray(array){
+
+  for(key in array){
+
+    if( typeof array[key] === 'object') {
+      clearIntertvalArray(array[key]);
+    }else{
+      clearInterval(array[key]);
+    }
+  
+  }
+
+}
