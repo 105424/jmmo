@@ -88,12 +88,6 @@ function parseMsg(msg){
     msg = msg.replace(re,'"'+command+'"');
   });
 
-  if(useTimeStamps){
-    temp = JSON.parse(msg);
-    delay = new Date().getTime() - temp.timeStamp;
-    console.log("msg delayed by: "+delay);
-  }
-
   return msg;
 }
 

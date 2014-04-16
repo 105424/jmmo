@@ -1,5 +1,5 @@
 this.port = 2000;
-this.users = [];
+this.users = {};
 
 this.startX = 0;
 this.startY = 0;

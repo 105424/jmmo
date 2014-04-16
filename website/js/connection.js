@@ -20,7 +20,6 @@ function Connection(callback)
     console.log(error);
   }    
   connection.onmessage = function (message) { 
-    console.log(message.data);
     if(isJson(message.data))
     {
       msgArray = JSON.parse(parseMsg(message.data));
@@ -28,6 +27,11 @@ function Connection(callback)
       for (key in msgArray){
         
         msg = msgArray[key];
+
+        if(useTimeStamps){
+          delay = new Date().getTime() - msg.timeStamp;
+          console.log("msg delayed by: "+delay);
+        }
 
         if(msg.type=="allUsers"){
 
@@ -51,15 +55,11 @@ function Connection(callback)
           if(msg.user.id != playerId){
             console.log("--------New Player--------");
             console.log("New Player:"+msg.user.id);
-            console.log(msg.user);
-
             new Player(msg.user.id, msg.user.x, msg.user.y);
           }
         } 
         if(msg.type=="userQuit")
         {
-
-          console.log(msg);
 
           console.log("------Delete Player -----");
           console.log("Deleted Player:"+msg.id);

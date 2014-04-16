@@ -7,10 +7,12 @@ var globals = require('./globals');
 
 var users = globals.users;
 
-var messageStack = [];
+var messageStack = {};
 
 var User = function(){
+  
   this.connection;
+
   this.x;
   this.y;
   this.id;
@@ -65,73 +67,71 @@ wsServer.on('request', function(request) {
     if(b==true) a=true;
   }
   
-  users.push(user);
+  users[user.id] = user;
   
-
-  sendUTF(user.connection, '{"type":"id","user":{"id":'+user.id+',"lvl":1,"hp":1000,"x":'+user.x+',"y":'+user.y+'}}');
+  sendUTF(user.id, '{"type":"id","user":{"id":'+user.id+',"lvl":1,"hp":1000,"x":'+user.x+',"y":'+user.y+'}}');
   
   var all  = {"type":"allUsers","users":[]};
-  for (var i=0; i < users.length; i++) {
+
+  for ( i in users) {
     if(users[i].id != user.id){
       var obj = {"id":users[i].id,"lvl":users[i].lvl,"hp":users[i].hp,"x":users[i].x,"y":users[i].y}
       all.users.push(obj);
     }
-  } 
+  }
 
-  sendUTF(user.connection, JSON.stringify(all));
+  sendUTF(user.id, JSON.stringify(all));
   
   toAll('{"type":"newUser","user":{"id":'+user.id+'}}');
   console.log(user.id+" connected");
   
   user.connection.on('message', function(message) {
-  if(message.type=="utf8"){
-    console.log('Received Message from '+user.id);
-    if(isJson(message.utf8Data))
-    {
-      var msg = parseMsg(message.utf8Data);
-      msg = JSON.parse(msg);
-
-      if(msg.type=="move")
+    if(message.type=="utf8"){
+      console.log('Received Message from '+user.id);
+      if(isJson(message.utf8Data))
       {
-        //console.log(user.id+" move action: "+msg.action+" to: "+msg.direction);
-        toAll(
-          '{"type":"move","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
-          user.id
-        );
-        user.x = msg.position.x;
-        user.y = msg.position.y;
-      }
+        var msg = parseMsg(message.utf8Data);
+        msg = JSON.parse(msg);
 
-      if(msg.type == "shoot")
-      {
-        toAll(
-          '{"type":"shoot","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
-          user.id
-        );
-        user.x = msg.position.x;
-        user.y = msg.position.y;
-      }
+        if(msg.type=="move")
+        {
+          //console.log(user.id+" move action: "+msg.action+" to: "+msg.direction);
+          toAll(
+            '{"type":"move","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
+            user.id
+          );
+          user.x = msg.position.x;
+          user.y = msg.position.y;
+        }
 
-
-    }else console.log("invalid json: "+message.utf8Data);
-  }
-});
-user.connection.on('close', function(reasonCode, description) {
-  toAll('{"type":"userQuit","id":'+user.id+'}');
-    for (var i=0; i < users.length; i++) {
-      if(users[i].id==user.id) users.splice(i,1);
+        if(msg.type == "shoot")
+        {
+          toAll(
+            '{"type":"shoot","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
+            user.id
+          );
+          user.x = msg.position.x;
+          user.y = msg.position.y;
+        }
+      } else console.log("invalid json: "+message.utf8Data);
     }
+  });
+
+  user.connection.on('close', function(reasonCode, description) {
+    toAll('{"type":"userQuit","id":'+user.id+'}');
+    delete users[user.id];
   }); 
 });
 
 function toAll(msg,exeption){
  // console.log("toAll: "+msg)//+" exeption: "+exeption);
-  for (var i=0; i < users.length; i++) {
+
+  for (i in users){
     if(users[i].id != exeption)
     {
-      sendUTF(users[i].connection, msg);
+      sendUTF(users[i].id, msg);
     }
-  } 
+  }
 }
 
 function isJson(str) {
@@ -159,7 +159,7 @@ function getCommandMap(callback){
   });
 }
 
-function sendUTF(connection, msg){
+function sendUTF(userId, msg){
 
   if(globals.useTimeStamps){
     msg = JSON.parse(msg);
@@ -171,7 +171,7 @@ function sendUTF(connection, msg){
     msg = msg.replace('"'+command+'"','"'+key+'"');
   });
 
-  addToStack(connection, msg);
+  addToStack(userId, msg);
 }
 
 function parseMsg(msg){
@@ -191,26 +191,39 @@ function setStackInterval(){
   setInterval(emptyStack, globals.stackSpeed);
 }
 
-function addToStack(connection, msg){
+function addToStack(userId, msg){
+  if( typeof messageStack[userId] == 'undefined'){
+    messageStack[userId] = [];
+  }
 
-  if(messageStack[connection] == null)
-    messageStack[connection] = {"connection":connection, "msgs": []};
-
-  messageStack[connection].msgs.push(msg);
+  messageStack[userId].push(msg);
 }
 
 function emptyStack(){
 
-  for (stackKey in messageStack){
+  for (userId in messageStack){
+
+    if(users[userId] == null){
+      console.log("fail");
+      /*
+        When a user quits the stack of the user should be emptied but somehow delete mmessageStack[userId] doesn't do the trick
+        Should be fixed probaply
+      */
+      continue;
+    }
 
     message = [];
-    messageStack[stackKey].msgs.forEach(function(msg){
+    messageStack[userId].forEach(function(msg){
       message.push(JSON.parse(msg));
     });
 
-    messageStack[stackKey].connection.sendUTF(JSON.stringify(message));
+    users[userId].connection.sendUTF(JSON.stringify(message));
   }
 
-  messageStack = [];
+  messageStack = {};
 
+}
+
+function emptyStackFromUser(userId){
+  delete messageStack[userId];
 }
