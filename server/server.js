@@ -6,8 +6,27 @@ var server = http.createServer();
 var globals = require('./globals');
 
 var users = globals.users;
+var map = globals.map;
+/*
+  
+    x altijd deelbaar door 1920
+    y altijd deelbaat door 1080
+
+  {
+    "x,y":[ objects ],
+    "x,y":[ objects ],
+    "x,y":[ objects ],
+    "x,y":[ objects ],
+    "x,y":[ objects ],
+    "x,y":[ objects ],
+    "x,y":[ objects ],
+  }
+
+*/
+
 
 var messageStack = {};
+
 
 var User = function(){
   
