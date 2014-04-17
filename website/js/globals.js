@@ -7,7 +7,6 @@ var connection;
 var canvasElements = [];*/
 
 var objects = {};
-var bullets = {};
 
 var standartWidth = 1920;
 var standartHeight = 1080;

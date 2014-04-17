@@ -6,7 +6,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   while(isUniquId == false)
   {
     this.id = Math.floor((Math.random()*1000000)+1);
-    if(bullets[this.id] != false){
+    if(objects[this.id] != false){
       isUniquId = true;
     }
   }
