@@ -11,6 +11,7 @@ var Player = function(id,x,y){
   });
 
   this.radius = 20;
+  this.faction = "players";
 
   this.maxSpd = standartPlayerMaxSpeed;
 
@@ -19,7 +20,6 @@ var Player = function(id,x,y){
 
   this.bulletSpeed = standartPlayerBulletSpeed;
 
-  this.intrs = [];
   this.intrs["move"] = [];
   this.intrs["shoot"] = [];
 
@@ -29,7 +29,7 @@ extend(Player, DrawableObject);
 Player.prototype.move = function(direction, action, x, y){
 
   if(x != undefined){
-    this.x = x; 
+    this.x = x;
   }
   if(y != undefined){
     this.y = y;
@@ -71,10 +71,12 @@ Player.prototype.move = function(direction, action, x, y){
 
 Player.prototype.shoot = function(direction, action, x, y){
 
-  if(x != null)
+  if(x != undefined){
     this.x = x;
-  if(y != null)
+  }
+  if(y != undefined){
     this.y = y;
+  }
 
   if(action == "start"){
     this.intrs["shoot"][direction] = setInterval(function(direction){
@@ -95,5 +97,27 @@ Player.prototype.shoot = function(direction, action, x, y){
     clearInterval(this.intrs["shoot"][direction]);
     this.intrs["shoot"][direction] = null;
   }
+
+}
+
+Player.prototype.update = function(){
+   Player.superclass.update.call(this);
+
+    for(id in objects){
+
+      // REAL COLLSION if(id != this.id && objects[id].faction != this.faction){
+      
+
+      if(id != this.id && objects[id].ownerId != this.id){ // FOR TESTING ONLY
+        if ( Math.abs(objects[id].x - this.x) + Math.abs(objects[id].y - this.y) < objects[id].radius + this.radius ){
+          console.log("hit");
+          objects[id].hasHit(this.id);
+        }
+      }
+    }
+
+}
+
+Player.prototype.hasHit = function(objectId){
 
 }

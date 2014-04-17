@@ -22,7 +22,7 @@ var updateSpeed = 20;
 var playerId;
 var commandMap;
 
-var useTimeStamps = true;
+var useTimeStamps = false;
 
 var offsetX = 0;
 var offestY = 0;

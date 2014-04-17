@@ -26,21 +26,6 @@ $(window).ready(function(){
       })
     });
 
-
-
-/*    defineSvg("bullet", defineSvg("circle", defineSvg("girlface", function(){
-
-      getCommandMap(function(map){
-        commandMap = map;
-
-        Connection(function(){ //Starts the Connection (js/Connection)
-          inputHandlers();
-          setInterval(update, updateSpeed);
-        });
-        
-      });
-    })));*/
-
   } else {
      console.log("to bad"); // Browser can't use websockets
   }
@@ -49,13 +34,12 @@ $(window).ready(function(){
   $(window).resize(resize);
 });
 
-function isJson(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
+
+function update(array){
+  if(playerId > 0 ){
+    offsetX = objects[playerId].x;
+    offsetY = objects[playerId].y;
+  }
 }
 
 function resize(){
@@ -64,6 +48,16 @@ function resize(){
 
 /*  widthRatio = document.body.clientWidth / standartWidth;
   heightRatio = document.body.clientHeight / standartHeight;*/
+}
+
+
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 
 function getRandomColor() {
@@ -119,13 +113,6 @@ function clearIntertvalArray(array){
   
   }
 
-}
-
-function update(array){
-  if(playerId > 0 ){
-    offsetX = objects[playerId].x;
-    offsetY = objects[playerId].y;
-  }
 }
 
 function defineSvg(imageName, callback){

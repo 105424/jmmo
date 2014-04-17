@@ -12,6 +12,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   }
 
   this.image = "bullet";
+  this.faction = objects[shotee].faction;
 
   Bullet.superclass.constructor.call(this,{
     "id":this.id,
@@ -26,20 +27,23 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   this.startY = this.y;
 
   this.radius = 10;
-  this.range = 1500;
+  this.range = 1000;
 
   this.ownerId = shotee;
-
-  this.intrs['update2'] = setInterval(this.update2.bind(this) ,updateSpeed,this);
 
 };
 extend(Bullet, DrawableObject);
 
+Bullet.prototype.update = function(){
+  Bullet.superclass.update.call(this);
 
-Bullet.prototype.update2 = function(){
+  if( Math.abs( this.x - this.startX) + Math.abs(this.y - this.startY)  > this.range){
 
-  if( Math.abs(this.x - this.startX) + Math.abs(this.y, this.startY) > this.range){
     this.quit();
   } 
 
+}
+
+Bullet.prototype.hasHit = function(objectId){
+  this.quit();
 }

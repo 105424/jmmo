@@ -13,23 +13,24 @@ var DrawableObject = function(args){
 
   this.intrs = [];
 
-  this.addToWindow(this,function(){
-    
-    this.update();
-
-    objects[this.id] = this;
-    this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
-  
-  }.bind(this));
 
   this.width = $("#"+this.image)[0].getBBox().width;
   this.height = $("#"+this.image)[0].getBBox().height;
+
+  this.addToWindow(this,function(){
+
+    objects[this.id] = this;
+    
+    this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
+  
+  }.bind(this));
 }
 
 DrawableObject.prototype.addToWindow = function(parent, callback) {
 
-  $(parent.dom.setAttribute("fill",getRandomColor()));
+  parent.update();
 
+  $(parent.dom.setAttribute("fill",getRandomColor()));
   $("#main").append(parent.dom);
 
   callback();
@@ -37,10 +38,10 @@ DrawableObject.prototype.addToWindow = function(parent, callback) {
 
 DrawableObject.prototype.update = function(){
 
-  this.dom.setAttribute("transform","translate("+this.x+","+this.y+")");
-
   this.x = this.x + this.spdX;
   this.y = this.y + this.spdY;
+
+  this.dom.setAttribute("transform","translate("+(this.x - this.width / 2)+ ","+(this.y - this.width / 2)+")");
 }
 
 DrawableObject.prototype.quit = function(){
