@@ -41,11 +41,9 @@ Player.prototype.addToWindow = function(parent,callback){
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4){
       var svg = xhr.responseXML.documentElement;
-
+*/
       $(parent.dom.setAttribute("fill",getRandomColor()));
 
-      $(parent.dom).append($(svg).children());
-      */
       $("#main").append(parent.dom);
 
       callback();

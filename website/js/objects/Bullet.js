@@ -29,7 +29,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 
   this.dom = document.createElementNS("http://www.w3.org/2000/svg","use");
   this.dom.setAttribute("id",this.id);
-  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#girlface");
+  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#bullet");
 
   this.intrs = [];
 
@@ -55,6 +55,9 @@ Bullet.prototype.addToWindow = function(parent,callback){
 
       $(parent.dom).append($(svg).children());
       */
+
+      parent.dom.setAttribute("fill","#F00");
+
       $("#main").append(parent.dom);
 
       callback();
