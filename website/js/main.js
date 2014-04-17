@@ -4,6 +4,10 @@ $(window).ready(function(){
   if ('WebSocket' in window){
 
 
+    if(getHashValue("server")){
+     addres = getHashValue("server");
+    };
+
 
     /* This should really be refactord. */
     defineSvg("bullet",function(){
@@ -143,4 +147,12 @@ function defineSvg(imageName, callback){
     }
   };
   xhr.send();
+}
+
+
+function getHashValue(key) {  
+  if(location.hash)
+    return location.hash.match(new RegExp(key+'=([^&]*)'))[1];
+
+  return false;
 }
