@@ -3,6 +3,8 @@ var DrawableObject = function(args){
   this.spdX = 0;
   this.spdY = 0;
 
+  this.hard = true; // Should it be stored in the objects array
+
   for( key in args){
     this[key] = args[key];
   }
@@ -19,7 +21,9 @@ var DrawableObject = function(args){
 
   this.addToWindow(this,function(){
 
-    objects[this.id] = this;
+    if(this.hard){
+      objects[this.id] = this;
+    }
     
     this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
   
@@ -30,7 +34,7 @@ DrawableObject.prototype.addToWindow = function(parent, callback) {
 
   parent.update();
 
-  $(parent.dom.setAttribute("fill",getRandomColor()));
+  parent.dom.setAttribute("fill",this.color);
   $("#main").append(parent.dom);
 
   callback();
@@ -45,7 +49,7 @@ DrawableObject.prototype.update = function(){
 }
 
 DrawableObject.prototype.quit = function(){
-
+  
   $("#"+this.id).remove();
 
   clearIntertvalArray(this.intrs);

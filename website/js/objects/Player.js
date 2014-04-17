@@ -112,6 +112,7 @@ Player.prototype.update = function(){
         if ( Math.abs(objects[id].x - this.x) + Math.abs(objects[id].y - this.y) < objects[id].radius + this.radius ){
           console.log("hit");
           objects[id].hasHit(this.id);
+          this.wasHit(id);
         }
       }
     }
@@ -120,4 +121,9 @@ Player.prototype.update = function(){
 
 Player.prototype.hasHit = function(objectId){
 
+}
+
+Player.prototype.wasHit = function(objectId){
+
+  new HitText(this.x, this.y,"-100");
 }

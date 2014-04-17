@@ -1,18 +1,10 @@
 var Bullet = function(x, y, spdX, spdY, shotee){
 
-  this.id = 42;
-
-  var isUniquId = false;
-  while(isUniquId == false)
-  {
-    this.id = Math.floor((Math.random()*1000000)+1);
-    if(objects[this.id] != false){
-      isUniquId = true;
-    }
-  }
+  this.id = getNewId();
 
   this.image = "bullet";
   this.faction = objects[shotee].faction;
+  this.color = "#f00";
 
   Bullet.superclass.constructor.call(this,{
     "id":this.id,
@@ -21,7 +13,6 @@ var Bullet = function(x, y, spdX, spdY, shotee){
     "spdX":spdX,
     "spdY":spdY,
   });
-
 
   this.startX = this.x;
   this.startY = this.y;

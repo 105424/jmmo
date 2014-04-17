@@ -13,15 +13,17 @@ $(window).ready(function(){
     defineSvg("bullet",function(){
       defineSvg("circle", function(){
         defineSvg("girlface", function(){
-          getCommandMap(function(map){
-            commandMap = map;
+          defineSvg("hitText", function(){
+            getCommandMap(function(map){
+              commandMap = map;
 
-            Connection(function(){ //Starts the Connection (js/Connection)
-              inputHandlers();
-              setInterval(update, updateSpeed);
+              Connection(function(){ //Starts the Connection (js/Connection)
+                inputHandlers();
+                setInterval(update, updateSpeed);
+              });
+                    
             });
-                  
-          });
+          })
         })
       })
     });
@@ -158,3 +160,19 @@ function extend(subClass, superClass) {
         superClass.prototype.constructor = superClass;
     }
 };
+
+function getNewId(){
+  var id = 0;
+
+  var isUniquId = false;
+  while(isUniquId == false)
+  {
+    id = Math.floor((Math.random()*1000000)+1);
+    if(objects[id] != false){
+      isUniquId = true;
+    }
+  }
+
+  return id;
+
+}
