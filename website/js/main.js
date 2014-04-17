@@ -1,21 +1,41 @@
 $(window).ready(function(){
   console.log("ready");
 
-  if(getHashValue("server")){
-    addres = getHashValue("server");
-  };
-
   if ('WebSocket' in window){
 
-    getCommandMap(function(map){
-      commandMap = map;
 
-      Connection(function(){ //Starts the Connection (js/Connection)
-        inputHandlers();
-        setInterval(update, updateSpeed);
-      });
-      
+
+    /* This should really be refactord. */
+    defineSvg("bullet",function(){
+      defineSvg("circle", function(){
+        defineSvg("girlface", function(){
+          getCommandMap(function(map){
+            commandMap = map;
+
+            Connection(function(){ //Starts the Connection (js/Connection)
+              inputHandlers();
+              setInterval(update, updateSpeed);
+            });
+                  
+          });
+        })
+      })
     });
+
+
+
+/*    defineSvg("bullet", defineSvg("circle", defineSvg("girlface", function(){
+
+      getCommandMap(function(map){
+        commandMap = map;
+
+        Connection(function(){ //Starts the Connection (js/Connection)
+          inputHandlers();
+          setInterval(update, updateSpeed);
+        });
+        
+      });
+    })));*/
 
   } else {
      console.log("to bad"); // Browser can't use websockets
@@ -49,13 +69,6 @@ function getRandomColor() {
       color += letters[Math.round(Math.random() * 15)];
     }
     return color;
-}
-
-function getHashValue(key) {
-  if(location.hash)
-    return location.hash.match(new RegExp(key+'=([^&]*)'))[1];
-
-  return false;
 }
 
 function sendUTF(msg){
@@ -109,4 +122,25 @@ function update(array){
     offsetX = objects[playerId].x;
     offsetY = objects[playerId].y;
   }
+}
+
+function defineSvg(imageName, callback){
+
+  var xhr = new XMLHttpRequest;
+  xhr.open('get',"images/"+imageName+".svg",true);
+  xhr.onreadystatechange = function(){
+    if (xhr.readyState == 4){
+      var svg = xhr.responseXML.documentElement;
+
+      dom = document.createElementNS("http://www.w3.org/2000/svg","g");
+      dom.setAttribute("id",imageName);
+
+      $(dom).append($(svg).children());
+      
+      $("#defs").append(dom);
+
+      callback();
+    }
+  };
+  xhr.send();
 }

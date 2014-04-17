@@ -16,9 +16,11 @@ var Player = function(id,x,y){
   this.bulletSpeed = standartPlayerBulletSpeed;
 
   this.color = getRandomColor();
+  
 
-  this.dom = document.createElementNS("http://www.w3.org/2000/svg","g");
+  this.dom = document.createElementNS("http://www.w3.org/2000/svg","use");
   this.dom.setAttribute("id",this.id);
+  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#circle");
   
   this.intrs = [];
   this.intrs["move"] = [];
@@ -34,7 +36,7 @@ var Player = function(id,x,y){
 
 Player.prototype.addToWindow = function(parent,callback){
 
-  var xhr = new XMLHttpRequest;
+/*  var xhr = new XMLHttpRequest;
   xhr.open('get',"images/circle.svg",true);
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4){
@@ -43,13 +45,13 @@ Player.prototype.addToWindow = function(parent,callback){
       $(parent.dom.setAttribute("fill",getRandomColor()));
 
       $(parent.dom).append($(svg).children());
-      
+      */
       $("#main").append(parent.dom);
 
       callback();
-    }
-  };
-  xhr.send();
+ //   }
+/*  };
+  xhr.send();*/
 
 }
 

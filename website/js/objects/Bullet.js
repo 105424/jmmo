@@ -27,8 +27,9 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   this.spdX = spdX;
   this.spdY = spdY;
 
-  this.dom = document.createElementNS("http://www.w3.org/2000/svg","g");
+  this.dom = document.createElementNS("http://www.w3.org/2000/svg","use");
   this.dom.setAttribute("id",this.id);
+  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#girlface");
 
   this.intrs = [];
 
@@ -46,20 +47,20 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 
 Bullet.prototype.addToWindow = function(parent,callback){
 
-  var xhr = new XMLHttpRequest;
+/*  var xhr = new XMLHttpRequest;
   xhr.open('get',"images/girlface.svg",true);
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4){
       var svg = xhr.responseXML.documentElement;
 
       $(parent.dom).append($(svg).children());
-      
+      */
       $("#main").append(parent.dom);
 
       callback();
-    }
+/*    }
   };
-  xhr.send();
+  xhr.send();*/
 }
 
 
