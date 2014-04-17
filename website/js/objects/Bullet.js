@@ -11,80 +11,35 @@ var Bullet = function(x, y, spdX, spdY, shotee){
     }
   }
 
-  this.radius = 10;
+  this.image = "bullet";
 
-  this.x = x;
-  this.y = y;
+  Bullet.superclass.constructor.call(this,{
+    "id":this.id,
+    "x":x,
+    "y":y,
+    "spdX":spdX,
+    "spdY":spdY,
+  });
+
 
   this.startX = this.x;
   this.startY = this.y;
 
+  this.radius = 10;
   this.range = 1500;
-
 
   this.ownerId = shotee;
 
-  this.spdX = spdX;
-  this.spdY = spdY;
+  this.intrs['update2'] = setInterval(this.update2.bind(this) ,updateSpeed,this);
 
-  this.dom = document.createElementNS("http://www.w3.org/2000/svg","use");
-  this.dom.setAttribute("id",this.id);
-  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#bullet");
-
-  this.intrs = [];
-
-  this.addToWindow(this,function(){
-    
-
-    this.update();
-
-    bullets[this.id] = this;
-
-    this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
-  
-  }.bind(this));
 };
-
-Bullet.prototype.addToWindow = function(parent,callback){
-
-/*  var xhr = new XMLHttpRequest;
-  xhr.open('get',"images/girlface.svg",true);
-  xhr.onreadystatechange = function(){
-    if (xhr.readyState == 4){
-      var svg = xhr.responseXML.documentElement;
-
-      $(parent.dom).append($(svg).children());
-      */
-
-      parent.dom.setAttribute("fill","#F00");
-
-      $("#main").append(parent.dom);
-
-      callback();
-/*    }
-  };
-  xhr.send();*/
-}
+extend(Bullet, DrawableObject);
 
 
-Bullet.prototype.update = function(){
-
-  this.dom.setAttribute("transform","translate("+this.x+","+this.y+")");
-
-  this.x = this.x + this.spdX;
-  this.y = this.y + this.spdY;
+Bullet.prototype.update2 = function(){
 
   if( Math.abs(this.x - this.startX) + Math.abs(this.y, this.startY) > this.range){
     this.quit();
   } 
 
-}
-
-Bullet.prototype.quit = function(){
-
-  $("#"+this.id).remove();
-
-  clearIntertvalArray(this.intrs);
-
-  delete bullets[this.id];
 }

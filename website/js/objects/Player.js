@@ -1,66 +1,30 @@
 var Player = function(id,x,y){
 
-  console.log("creating new Player");
+  this.image = "circle";
+  this.color = getRandomColor();
 
-  this.id = id;
+
+  Player.superclass.constructor.call(this,{
+    "id":id,
+    "x":x,
+    "y":y
+  });
 
   this.radius = 20;
 
-  this.x = x;
-  this.y = y;
-
   this.maxSpd = standartPlayerMaxSpeed;
-  this.spdX = 0;
-  this.spdY = 0;
+
+  this.spdX;
+  this.spdY;
 
   this.bulletSpeed = standartPlayerBulletSpeed;
 
-  this.color = getRandomColor();
-  
-
-  this.dom = document.createElementNS("http://www.w3.org/2000/svg","use");
-  this.dom.setAttribute("id",this.id);
-  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#circle");
-  
   this.intrs = [];
   this.intrs["move"] = [];
   this.intrs["shoot"] = [];
 
-  this.addToWindow(this,function(){
-    
-    objects[this.id] = this;
-    this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
-  
-  }.bind(this));
 };
-
-Player.prototype.addToWindow = function(parent,callback){
-
-/*  var xhr = new XMLHttpRequest;
-  xhr.open('get',"images/circle.svg",true);
-  xhr.onreadystatechange = function(){
-    if (xhr.readyState == 4){
-      var svg = xhr.responseXML.documentElement;
-*/
-      $(parent.dom.setAttribute("fill",getRandomColor()));
-
-      $("#main").append(parent.dom);
-
-      callback();
- //   }
-/*  };
-  xhr.send();*/
-
-}
-
-Player.prototype.update = function(){
-
-  this.dom.setAttribute("transform","translate("+this.x+","+this.y+")");
-
-  this.x = this.x + this.spdX;
-  this.y = this.y + this.spdY;
-
-}
+extend(Player, DrawableObject);
 
 Player.prototype.move = function(direction, action, x, y){
 
@@ -103,14 +67,6 @@ Player.prototype.move = function(direction, action, x, y){
     }
 
   }
-}
-
-Player.prototype.quit = function(){
-  $("#"+this.id).remove();
-  
-  clearIntertvalArray(this.intrs);
-
-  delete objects[this.id];
 }
 
 Player.prototype.shoot = function(direction, action, x, y){
