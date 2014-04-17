@@ -51,6 +51,8 @@ var User = function(){
   
   this.hp;
   this.lvl;
+
+  this.color = getRandomColor();
 }; 
 
 getCommandMap(function(map){
@@ -103,20 +105,30 @@ wsServer.on('request', function(request) {
   
   users[user.id] = user;
   
-  sendUTF(user.id, '{"type":"id","user":{"id":'+user.id+',"lvl":1,"hp":1000,"x":'+user.x+',"y":'+user.y+'}}');
+  sendUTF(user.id, 
+    '{"type":"id", "user":{ "id":'+user.id+', "lvl":1, "hp":1000, "x":'+user.x+', "y":'+user.y+', "color":"'+user.color+'" } }'
+  );
   
   var all  = {"type":"allUsers","users":[]};
 
   for ( i in users) {
     if(users[i].id != user.id){
-      var obj = {"id":users[i].id,"lvl":users[i].lvl,"hp":users[i].hp,"x":users[i].x,"y":users[i].y}
+      var obj = {
+        "id":users[i].id,
+        "lvl":users[i].lvl,
+        "hp":users[i].hp,
+        "x":users[i].x,
+        "y":users[i].y,
+        "color":users[i].color
+      }
+      
       all.users.push(obj);
     }
   }
 
   sendUTF(user.id, JSON.stringify(all));
   
-  toAll('{"type":"newUser","user":{"id":'+user.id+'}}');
+  toAll(' { "type":"newUser", "user":{ "id":'+user.id+', "color":"'+user.color+'" } }');
   console.log(user.id+" connected");
   
   user.connection.on('message', function(message) {
@@ -289,4 +301,13 @@ function autoGenerateMap(){
 
   console.log(map);
 
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+      color += letters[Math.round(Math.random() * 15)];
+    }
+    return color;
 }

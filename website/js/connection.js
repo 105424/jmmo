@@ -36,7 +36,7 @@ function Connection(callback)
         if(msg.type=="allUsers"){
 
           msg.users.forEach(function(user){
-            new Player(user.id, user.x, user.y)
+            new Player(user.id, user.x, user.y).color = user.color;
           });
 
         }       
@@ -48,14 +48,14 @@ function Connection(callback)
 
           playerId = msg.user.id;
 
-          new Player(playerId,msg.user.x,msg.user.y);
+          new Player(playerId,msg.user.x,msg.user.y).color = msg.user.color;
         }
         if(msg.type=="newUser")
         {
           if(msg.user.id != playerId){
             console.log("--------New Player--------");
             console.log("New Player:"+msg.user.id);
-            new Player(msg.user.id, msg.user.x, msg.user.y);
+            new Player(msg.user.id, msg.user.x, msg.user.y).color = msg.user.color;
           }
         } 
         if(msg.type=="userQuit")

@@ -1,7 +1,9 @@
 var Player = function(id,x,y){
 
   this.image = "circle";
-  this.color = getRandomColor();
+
+
+  this.color = "#"+id.toString().substring(0,3);
 
 
   Player.superclass.constructor.call(this,{

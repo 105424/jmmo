@@ -45,7 +45,9 @@ DrawableObject.prototype.update = function(){
   this.x = this.x + this.spdX;
   this.y = this.y + this.spdY;
 
-  this.dom.setAttribute("transform","translate("+(this.x - this.width / 2)+ ","+(this.y - this.width / 2)+")");
+  this.dom.setAttribute("transform","translate("
+    + ((this.x - this.width / 2) - offsetX) + ","
+    + ((this.y - this.width / 2) - offsetY) + ")");
 }
 
 DrawableObject.prototype.quit = function(){

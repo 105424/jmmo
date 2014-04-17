@@ -8,6 +8,9 @@ $(window).ready(function(){
      addres = getHashValue("server");
     };
 
+    offsetX = 0;
+    offsetY = 0;
+
 
     /* This should really be refactord. */
     defineSvg("bullet",function(){
@@ -39,8 +42,8 @@ $(window).ready(function(){
 
 function update(array){
   if(playerId > 0 ){
-    offsetX = objects[playerId].x;
-    offsetY = objects[playerId].y;
+    offsetX = objects[playerId].x - standartWidth / 2;
+    offsetY = objects[playerId].y - standartHeight / 2;
   }
 }
 
