@@ -2,12 +2,13 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 
   this.id = getNewId();
 
-  this.image = "bullet";
+  this.image = "bullet-2";
   this.faction = objects[shotee].faction;
   this.color = "#f00";
 
-  this.width = 200;
-  this.height = 200;
+  this.width = 30;
+  this.height = 30;
+  this.radius = 15;
 
   Bullet.superclass.constructor.call(this,{
     "id":this.id,
@@ -15,6 +16,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
     "y":y,
     "spdX":spdX,
     "spdY":spdY,
+    "imageType":"png"
   });
 
   this.startX = this.x;

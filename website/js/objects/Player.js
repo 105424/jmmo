@@ -1,20 +1,22 @@
 var Player = function(id,x,y){
 
-  this.image = "circle";
+  this.image = "wizard";
 
 
   this.color = "#"+id.toString().substring(0,3);
 
-  this.width = 200;
-  this.height = 200;
+  this.width = 100;
+  this.height = 100;
+  this.radius = 50;
+
 
   Player.superclass.constructor.call(this,{
     "id":id,
     "x":x,
-    "y":y
+    "y":y,
+    "imageType":"png"
   });
 
-  this.radius = 20;
   this.faction = "players";
 
   this.maxSpd = standartPlayerMaxSpeed;
@@ -108,6 +110,7 @@ Player.prototype.update = function(){
    Player.superclass.update.call(this);
 
     for(id in objects){
+
 
       // REAL COLLSION if(id != this.id && objects[id].faction != this.faction){
       

@@ -22,7 +22,15 @@ function updateCanvas(){
 
   for(element in canvasElements){
     element = canvasElements[element];
-    canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY,element.width,element.height);
+    canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY, element.width, element.height);
+
+
+    if(drawHitBox){
+      canvasContext.beginPath();
+      canvasContext.arc(element.x - offsetX , element.y - offsetY, element.radius, 0, 2 * Math.PI);
+      canvasContext.stroke();
+    }
+
   }
 
 }

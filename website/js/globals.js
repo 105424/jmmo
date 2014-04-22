@@ -7,6 +7,7 @@ var canvas;
 var canvasElements = {};
 var drawSpeed = 10;
 
+var drawHitBox = true;
 
 var objects = {};
 
