@@ -13,6 +13,9 @@ var Rock = function(x,y){
     "y":y,
     "imageType":"png"
   });
+
+  this.faction = "static";
+
 }
 extend(Rock, DrawableObject);
 

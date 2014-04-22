@@ -1,37 +1,33 @@
-var Player = function(id,x,y){
+var SpriteGod = function(id,x,y){
 
-  this.image = "wizard";
+  this.image = "spriteGod";
 
-  this.color = "#"+id.toString().substring(0,3);
-
-  this.width = 50;
-  this.height = 50;
-  this.radius = 20;
+  this.width = 420;
+  this.height = 420;
+  this.radius = 100;
 
 
-  Player.superclass.constructor.call(this,{
+  SpriteGod.superclass.constructor.call(this,{
     "id":id,
     "x":x,
     "y":y,
     "imageType":"png"
   });
 
-  this.faction = "players";
+  this.faction = "enemys";
 
-  this.maxSpd = standartPlayerMaxSpeed;
+  this.maxSpd = 8;
+  this.bulletSpeed = 15;
 
-  this.spdX;
-  this.spdY;
-
-  this.bulletSpeed = standartPlayerBulletSpeed;
+  this.bulletType = SpriteStar;
 
   this.intrs["move"] = [];
   this.intrs["shoot"] = [];
 
 };
-extend(Player, DrawableObject);
+extend(SpriteGod, DrawableObject);
 
-Player.prototype.move = function(direction, action, x, y){
+SpriteGod.prototype.move = function(direction, action, x, y){
 
   if(x != undefined){
     this.x = x;
@@ -74,7 +70,7 @@ Player.prototype.move = function(direction, action, x, y){
   }
 }
 
-Player.prototype.shoot = function(direction, action, x, y){
+SpriteGod.prototype.shoot = function(direction, action, x, y){
 
   if(x != undefined){
     this.x = x;
@@ -87,13 +83,13 @@ Player.prototype.shoot = function(direction, action, x, y){
     this.intrs["shoot"][direction] = setInterval(function(direction){
 
       if(direction == "up")
-        new Bullet(this.x, this.y, 0, -this.bulletSpeed, this.id);
+        new this.bulletType(this.x, this.y, 0, -this.bulletSpeed, this.id);
       if(direction == "right")
-        new Bullet(this.x, this.y, this.bulletSpeed, 0, this.id);
+        new this.bulletType(this.x, this.y, this.bulletSpeed, 0, this.id);
       if(direction == "down")
-        new Bullet(this.x, this.y, 0, this.bulletSpeed, this.id);
+        new this.bulletType(this.x, this.y, 0, this.bulletSpeed, this.id);
       if(direction == "left")
-        new Bullet(this.x, this.y, -this.bulletSpeed, 0, this.id);
+        new this.bulletType(this.x, this.y, -this.bulletSpeed, 0, this.id);
       
     }.bind(this),100,direction);
   }
@@ -105,7 +101,7 @@ Player.prototype.shoot = function(direction, action, x, y){
 
 }
 
-Player.prototype.update = function(){
+SpriteGod.prototype.update = function(){
    Player.superclass.update.call(this);
 
     for(id in objects){
@@ -121,11 +117,11 @@ Player.prototype.update = function(){
 
 }
 
-Player.prototype.hasHit = function(objectId){
+SpriteGod.prototype.hasHit = function(objectId){
 
 }
 
-Player.prototype.wasHit = function(objectId){
+SpriteGod.prototype.wasHit = function(objectId){
 
   new HitText(this.x, this.y,"-100");
 }

@@ -327,13 +327,27 @@ function autoGenerateMap(){
         );
       }
 
+      for(var i = 0; i < 3; i++){
+
+        tX = Math.floor((Math.random()*1920)+1);
+        tY = Math.floor((Math.random()*1080)+1);
+
+        tileMap.enemies.push(
+          {
+            "type":"SpriteGod",
+            "x":tX,
+            "y":tY
+          }
+        );
+      }
+
 
       map[x*1920+","+y*1080] = tileMap;
 
     }
   }
 
-  console.log(map);
+  console.log("Loaded Map");
 
 }
 

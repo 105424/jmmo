@@ -10,7 +10,6 @@ var DrawableObject = function(args){
     this[key] = args[key];
   }
 
-
   this.intrs = [];
   this.img = document.createElement('img');
 
