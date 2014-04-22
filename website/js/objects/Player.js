@@ -5,8 +5,8 @@ var Player = function(id,x,y){
 
   this.color = "#"+id.toString().substring(0,3);
 
-  this.width = 500;
-  this.height = 500;
+  this.width = 200;
+  this.height = 200;
 
   Player.superclass.constructor.call(this,{
     "id":id,

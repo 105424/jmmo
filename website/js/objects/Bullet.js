@@ -6,8 +6,8 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   this.faction = objects[shotee].faction;
   this.color = "#f00";
 
-  this.width = 100;
-  this.height = 100;
+  this.width = 200;
+  this.height = 200;
 
   Bullet.superclass.constructor.call(this,{
     "id":this.id,

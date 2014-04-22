@@ -22,7 +22,7 @@ function updateCanvas(){
 
   for(element in canvasElements){
     element = canvasElements[element];
-    canvasContext.drawImage(element.img ,element.x, element.y);
+    canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY,element.width,element.height);
   }
 
 }

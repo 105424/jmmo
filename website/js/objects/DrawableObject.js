@@ -14,9 +14,6 @@ var DrawableObject = function(args){
   this.intrs = [];
   this.img = document.createElement('img');
 
-/*  this.width = $("#"+this.image)[0].getBBox().width;
-  this.height = $("#"+this.image)[0].getBBox().height;*/
-
   this.addToWindow(this,function(){
 
     if(this.hard){
