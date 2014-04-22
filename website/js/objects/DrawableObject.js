@@ -44,8 +44,6 @@ DrawableObject.prototype.addToWindow = function(parent, callback) {
     callback();
   }
 
-
-
 };
 
 DrawableObject.prototype.update = function(){

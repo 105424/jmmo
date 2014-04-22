@@ -20,13 +20,24 @@ extend(MapTile, DrawableObject);
 
 MapTile.prototype.addToWindow = function(parent, callback) {
 
-  parent.img.src = 'images/'+parent.image+"."+parent.imageType;
+  if(images[parent.image+"."+parent.imageType] == null){
+    images[parent.image+"."+parent.imageType] = document.createElement('img');
+    images[parent.image+"."+parent.imageType].src = 'images/'+parent.image+"."+parent.imageType;
 
-  parent.img.onload = function(){
-    mapTiles[parent.id] = parent;
+    images[parent.image+"."+parent.imageType].onload = function(){
+      parent.update();
+      MapTiles[parent.id] = parent;
+      callback();
+    }
+
+    parent.img = images[parent.image+"."+parent.imageType];
+  }else{
+    parent.img = images[parent.image+"."+parent.imageType];
     parent.update();
+    mapTiles[parent.id] = parent;
     callback();
   }
+
 };
 
 MapTile.prototype.quit = function(){

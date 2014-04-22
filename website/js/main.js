@@ -241,8 +241,6 @@ function lowerTo(number, target){
 
 function loadMap(map){
 
-  console.log(map);
-
   var objects = {};
 
   for(obj in map.objects){
@@ -258,17 +256,14 @@ function loadMap(map){
 
 
   var enemies = {};
-  for(enemy in map.enemies){
-    enemy = map.enemies[enemy];
 
-    if(enemy.type == "SpriteGod"){
-      var spriteGod = new SpriteGod(obj.x + map.x, obj.y + map.y);
+  for(enemy in map.enemies){
+      enemy = map.enemies[enemy];
+      var spriteGod = new SpriteGod(enemy.id, enemy.x + map.x, enemy.y + map.y);
       enemies[spriteGod.id] = spriteGod;
-    }
 
   }
   map.enemies = enemies;
-
 
   var tiles = {};
 

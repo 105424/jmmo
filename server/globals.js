@@ -13,3 +13,5 @@ this.useTimeStamps = true;
 this.stackSpeed = 50;
 
 this.map = {};
+
+this.enemies = {};

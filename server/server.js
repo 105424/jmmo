@@ -7,6 +7,9 @@ var globals = require('./globals');
 
 var users = globals.users;
 var map = globals.map;
+
+var enemies = globals.enemies;
+
 /*
   
     x altijd deelbaar door 1920
@@ -40,20 +43,32 @@ var Map = function(x,y){
   this.npcs = [];
   this.enemies = [];
   this.objects = [];
+  this.tiles = {};
 }
 
 var User = function(){
   
   this.connection;
 
-  this.x;
-  this.y;
-  this.id;
-  
-  this.hp;
-  this.lvl;
+  this.id = generateId();
 
-  this.color = getRandomColor();
+  this.x = globals.startX;
+  this.y = globals.startY;
+  this.lvl = globals.startLvl;
+  this.hp = globals.startHp;
+
+}; 
+
+var Enemy = function(type, x,y,hp){
+  this.id = generateId();
+
+  this.type = type;
+
+  this.x = x;
+  this.y = y;
+  this.hp = hp;
+
+  enemies[this.id] = this;
 }; 
 
 getCommandMap(function(map){
@@ -87,23 +102,7 @@ wsServer.on('request', function(request) {
 
   var user = new User();
   user.connection = request.accept(null, request.origin); 
-  
-  user.x = globals.startX;
-  user.y = globals.startY;
-  user.lvl = globals.startLvl;
-  user.hp = globals.startHp;
 
-  var a = false;
-  while(a == false)
-  {
-    user.id = Math.floor((Math.random()*1000000)+1);
-    var b = true;
-    for (var i=0; i < users.length; i++) {
-      if(user.id==users[i].id) b = false;
-    } 
-    if(b==true) a=true;
-  }
-  
   users[user.id] = user;
   
   sendUTF(user.id, 
@@ -332,13 +331,7 @@ function autoGenerateMap(){
         tX = Math.floor((Math.random()*1920)+1);
         tY = Math.floor((Math.random()*1080)+1);
 
-        tileMap.enemies.push(
-          {
-            "type":"SpriteGod",
-            "x":tX,
-            "y":tY
-          }
-        );
+        tileMap.enemies.push(new Enemy("spriteGod",tX,tY,2000));
       }
 
 
@@ -351,11 +344,23 @@ function autoGenerateMap(){
 
 }
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-      color += letters[Math.round(Math.random() * 15)];
-    }
-    return color;
+function generateId(){
+  var a = false;
+  var id;
+
+  while(a == false)
+  {
+    var id = Math.floor((Math.random()*1000000)+1);
+    var b = true;
+    for (key in users) {
+      if(id == key) b = false;
+    } 
+    for (key in enemies) {
+      if(id == key) b = false;
+    } 
+
+    if(b==true) a=true;
+  }
+
+  return id;
 }
