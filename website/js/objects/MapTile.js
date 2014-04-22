@@ -29,7 +29,7 @@ MapTile.prototype.addToWindow = function(parent, callback) {
   }
 };
 
-DrawableObject.prototype.quit = function(){
+MapTile.prototype.quit = function(){
 
   clearIntertvalArray(this.intrs);
 

@@ -293,8 +293,8 @@ function emptyStackFromUser(userId){
 
 function autoGenerateMap(){
   
-  for (var y = -5; y < 5; y++) {
-    for (var x = -5; x < 5; x++) { 
+  for (var y = -20; y < 20; y++) {
+    for (var x = -20; x < 20; x++) { 
 
       var tileMap = new Map(x*1920, y*1080);
 
