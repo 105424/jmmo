@@ -36,9 +36,10 @@ var Map = function(x,y){
   this.x = x;
   this.y = y;
 
-  this.users;
-  this.npcs;
-  this.enemies;
+  this.users = [];
+  this.npcs = [];
+  this.enemies = [];
+  this.objects = [];
 }
 
 var User = function(){
@@ -295,7 +296,26 @@ function autoGenerateMap(){
   
   for (var y = -20; y < 20; y++) {
     for (var x = -20; x < 20; x++) { 
-      map[x*1920+","+y*1080] = new Map(x*1920,y*1080);
+
+      tileMap = new Map(x*1920, y*1080);
+
+      for(var i = 0; i < 5; i++){
+
+        tX = Math.floor((Math.random()*1920)+1);
+        tY= Math.floor((Math.random()*1080)+1);
+
+        tileMap.objects.push(
+          {
+            "type":"rock",
+            "x":x,
+            "y":y
+          }
+        );
+      }
+
+
+      map[x*1920+","+y*1080] = tileMap;
+
     }
   }
 

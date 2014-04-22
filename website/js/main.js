@@ -17,15 +17,17 @@ $(window).ready(function(){
       defineSvg("circle", function(){
         defineSvg("girlface", function(){
           defineSvg("hitText", function(){
-            getCommandMap(function(map){
-              commandMap = map;
+            defineSvg("rock", function(){
+              getCommandMap(function(map){
+                commandMap = map;
 
-              Connection(function(){ //Starts the Connection (js/Connection)
-                inputHandlers();
-                setInterval(update, updateSpeed);
+                Connection(function(){ //Starts the Connection (js/Connection)
+                  inputHandlers();
+                  setInterval(update, updateSpeed);
+                });
+                      
               });
-                    
-            });
+            })
           })
         })
       })

@@ -17,7 +17,6 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   this.startX = this.x;
   this.startY = this.y;
 
-  this.radius = 10;
   this.range = 1000;
 
   this.ownerId = shotee;
