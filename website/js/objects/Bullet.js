@@ -3,6 +3,7 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   this.id = getNewId();
 
   this.image = "bullet-2";
+
   this.faction = objects[shotee].faction;
   this.color = "#f00";
 

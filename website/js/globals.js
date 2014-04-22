@@ -35,3 +35,5 @@ var mapState = {
   "loaded":{},
   "current":""
 }
+
+var images = {};

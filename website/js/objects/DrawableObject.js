@@ -27,13 +27,26 @@ var DrawableObject = function(args){
 
 DrawableObject.prototype.addToWindow = function(parent, callback) {
 
-  parent.img.src = 'images/'+parent.image+"."+parent.imageType;
+  if(images[parent.image+"."+parent.imageType] == null){
+    images[parent.image+"."+parent.imageType] = document.createElement('img');
+    images[parent.image+"."+parent.imageType].src = 'images/'+parent.image+"."+parent.imageType;
 
-  parent.img.onload = function(){
-    canvasElements[parent.id] = parent;
+    images[parent.image+"."+parent.imageType].onload = function(){
+      parent.update();
+      canvasElements[parent.id] = parent;
+      callback();
+    }
+
+    parent.img = images[parent.image+"."+parent.imageType];
+  }else{
+    parent.img = images[parent.image+"."+parent.imageType];
     parent.update();
+    canvasElements[parent.id] = parent;
     callback();
   }
+
+
+
 };
 
 DrawableObject.prototype.update = function(){

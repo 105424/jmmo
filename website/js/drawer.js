@@ -21,8 +21,16 @@ function updateCanvas(){
   canvasContext.clearRect(0,0,canvas.width,canvas.height)
 
   for(element in mapTiles){
-     element = mapTiles[element];
-     canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY, element.width, element.height);
+    element = mapTiles[element];
+
+/*    distanceFromCenterX = Math.abs(element.x - objects[playerId].x);
+    distanceFromCenterY = Math.abs(element.y - objects[playerId].y);*/
+    distanceFromCenterX = Math.abs(element.x - offsetX - standartWidth /2);
+    distanceFromCenterY = Math.abs(element.y - offsetY - standartHeight / 2);
+
+    if( distanceFromCenterX < (standartWidth / 2) + 192 && distanceFromCenterY < (standartHeight / 2) + 108 ){
+      canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY, element.width, element.height);
+    }
   }
 
 
@@ -32,13 +40,17 @@ function updateCanvas(){
     elX = (element.x - element.width / 2 ) - offsetX;
     elY = (element.y - element.height / 2 ) - offsetY;
 
-    canvasContext.drawImage(element.img , elX, elY, element.width, element.height);
+    distanceFromCenterX = Math.abs(element.x - offsetX - standartWidth /2);
+    distanceFromCenterY = Math.abs(element.y - offsetY - standartHeight / 2);
 
+    if( distanceFromCenterX < (standartWidth / 2) + 192 && distanceFromCenterY < (standartHeight / 2) + 108 ){
+      canvasContext.drawImage(element.img , elX, elY, element.width, element.height);
+      if(drawHitBox){
+        canvasContext.beginPath();
+        canvasContext.arc(element.x - offsetX , element.y - offsetY, element.radius, 0, 2 * Math.PI);
+        canvasContext.stroke();
+      }
 
-    if(drawHitBox){
-      canvasContext.beginPath();
-      canvasContext.arc(element.x - offsetX , element.y - offsetY, element.radius, 0, 2 * Math.PI);
-      canvasContext.stroke();
     }
 
   }
