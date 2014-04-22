@@ -28,3 +28,10 @@ MapTile.prototype.addToWindow = function(parent, callback) {
     callback();
   }
 };
+
+DrawableObject.prototype.quit = function(){
+
+  clearIntertvalArray(this.intrs);
+
+  delete mapTiles[this.id];
+}

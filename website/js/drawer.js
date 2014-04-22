@@ -23,8 +23,6 @@ function updateCanvas(){
   for(element in mapTiles){
     element = mapTiles[element];
 
-/*    distanceFromCenterX = Math.abs(element.x - objects[playerId].x);
-    distanceFromCenterY = Math.abs(element.y - objects[playerId].y);*/
     distanceFromCenterX = Math.abs(element.x - offsetX - standartWidth /2);
     distanceFromCenterY = Math.abs(element.y - offsetY - standartHeight / 2);
 

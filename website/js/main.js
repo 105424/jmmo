@@ -205,9 +205,22 @@ function checkMap(){
 
   if(mapState.current != currentX+","+currentY){
 
+
+
+    for(var x = -2; x < 3; x++){
+      for(var y = -2; y < 3; y++){
+        
+        if(y < -1 || y > 1 || x < -1 || x > 1){
+
+          if(mapState.loaded[ (currentX - (standartWidth * x)) +","+ (currentY - (standartHeight * y)) ] != null ){
+            dropMap((currentX - (standartWidth * x)) +","+ (currentY - (standartHeight * y)));
+          }
+        }
+      }
+    }
+
     for(var x = -1; x < 2; x++){
       for(var y = -1; y < 2; y++){
-
         if(mapState.loaded[ (currentX - (standartWidth * x)) +","+ (currentY - (standartHeight * y)) ] == null ){
           getMap((currentX - (standartWidth * x)) +","+ (currentY - (standartHeight * y)));
         }
@@ -228,20 +241,48 @@ function lowerTo(number, target){
 
 function loadMap(map){
 
+
+  var objects = {};
+
   for(obj in map.objects){
     obj = map.objects[obj];
 
     if(obj.type == "rock"){
-      new Rock(obj.x + map.x, obj.y + map.y);
+      var rock = new Rock(obj.x + map.x, obj.y + map.y);
+      objects[rock.id] = rock;
     }
 
   }
 
+  map.objects = objects;
+
+
+  var tiles = {};
+
   for(tile in map.tiles){
     tile = map.tiles[tile];
-    new MapTile(map.x + tile.x, map.y + tile.y, tile.image)
+    var mapTile = new MapTile(map.x + tile.x, map.y + tile.y, tile.image);
+    tiles[mapTile.id] = mapTile;
   }
 
+  map.tiles = tiles;
+
+  cord = map.x + "," + map.y;
+  mapState.loaded[cord] = map;
+}
+
+function dropMap(cord){
+  console.log("Dropping Map: "+cord);
+  
+  for(objId in mapState.loaded[cord].tiles){
+    mapState.loaded[cord].tiles[objId].quit();
+  }
+
+  for(objId in mapState.loaded[cord].objects){
+    mapState.loaded[cord].objects[objId].quit();
+  }
+
+  delete mapState.loaded[cord];
 }
 
 

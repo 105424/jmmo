@@ -44,7 +44,6 @@ function move(direction, action){
 }
 
 function shoot(direction, action){
-
   // Maybe implement key state and previeus key state?? //
   if(action == 'start' && objects[playerId].intrs["shoot"][direction] == null){
     sendUTF('{"type":"shoot", "action":"'+action+'","direction":"'+direction+'","position":{"x":'+objects[playerId].x+',"y":'+objects[playerId].y+'} }');
