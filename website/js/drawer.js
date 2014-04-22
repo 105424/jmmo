@@ -12,18 +12,18 @@ function setupCanvas(){
   setInterval( updateCanvas , drawSpeed );
   canvasContext = canvas.getContext("2d");
 
-  new Testcircle(0,0);
+  resizeCanvas();
+
 }
 
 function updateCanvas(){
-  resizeCanvas();
 
-  canvasContext.fillStyle = getRandomColor();
-  canvasContext.fillRect( 0 , 0 , canvas.width , canvas.height );
+  canvasContext.clearRect(0,0,canvas.width,canvas.height)
 
-  canvasElements.forEach(function(element){
-    canvasContext.drawSvg(element.img ,element.x, element.y);
-  });
+  for(element in canvasElements){
+    element = canvasElements[element];
+    canvasContext.drawImage(element.img ,element.x, element.y);
+  }
 
 }
 
@@ -37,6 +37,12 @@ function getRandomColor() {
 }
 
 function resizeCanvas(){
-  canvas.width = document.body.clientWidth;
-  canvas.height = document.body.clientHeight;
+  canvas.width = standartWidth;
+  canvas.height = standartHeight;
+
+  widthRatio = document.body.clientWidth / standartWidth;
+  heightRatio = document.body.clientHeight / standartHeight;
+
+  canvasContext.scale(widthRatio,heightRatio);
+
 }

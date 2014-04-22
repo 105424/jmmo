@@ -4,20 +4,18 @@ var DrawableObject = function(args){
   this.spdY = 0;
 
   this.hard = true; // Should it be stored in the objects array
+  this.imageType = "svg";
 
   for( key in args){
     this[key] = args[key];
   }
 
-  this.dom = document.createElementNS("http://www.w3.org/2000/svg","use");
-  this.dom.setAttribute("id",this.id);
-  this.dom.setAttributeNS('http://www.w3.org/1999/xlink',"xlink:href","#"+this.image);
 
   this.intrs = [];
+  this.img = document.createElement('img');
 
-
-  this.width = $("#"+this.image)[0].getBBox().width;
-  this.height = $("#"+this.image)[0].getBBox().height;
+/*  this.width = $("#"+this.image)[0].getBBox().width;
+  this.height = $("#"+this.image)[0].getBBox().height;*/
 
   this.addToWindow(this,function(){
 
@@ -32,29 +30,25 @@ var DrawableObject = function(args){
 
 DrawableObject.prototype.addToWindow = function(parent, callback) {
 
-  parent.update();
+  parent.img.src = 'images/'+parent.image+"."+parent.imageType;
 
-  parent.dom.setAttribute("fill",this.color);
-  $("#main").append(parent.dom);
-
-  callback();
+  parent.img.onload = function(){
+    canvasElements[parent.id] = parent;
+    parent.update();
+    callback();
+  }
 };
 
 DrawableObject.prototype.update = function(){
 
   this.x = this.x + this.spdX;
   this.y = this.y + this.spdY;
-
-  this.dom.setAttribute("transform","translate("
-    + ((this.x - this.width / 2) - offsetX) + ","
-    + ((this.y - this.width / 2) - offsetY) + ")");
 }
 
 DrawableObject.prototype.quit = function(){
-  
-  $("#"+this.id).remove();
 
   clearIntertvalArray(this.intrs);
 
+  delete canvasElements[this.id];
   delete objects[this.id];
 }

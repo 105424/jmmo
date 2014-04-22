@@ -3,8 +3,10 @@ var addres = "localhost";
 
 var connection;
 
-/*var canvas;
-var canvasElements = [];*/
+var canvas;
+var canvasElements = {};
+var drawSpeed = 10;
+
 
 var objects = {};
 

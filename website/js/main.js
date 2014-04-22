@@ -13,7 +13,7 @@ $(window).ready(function(){
 
 
     /* This should really be refactord. */
-    defineSvg("bullet",function(){
+/*    defineSvg("bullet",function(){
       defineSvg("circle", function(){
         defineSvg("girlface", function(){
           defineSvg("hitText", function(){
@@ -31,14 +31,26 @@ $(window).ready(function(){
           })
         })
       })
-    });
+    });*/
+
+  getCommandMap(function(map){
+    commandMap = map;
+
+    Connection(function(){ //Starts the Connection (js/Connection)
+      inputHandlers();
+      initCanvas();
+
+      resize();
+      $(window).resize(resize);
+
+      setInterval(update, updateSpeed);
+    });              
+  });
+
 
   } else {
      console.log("to bad"); // Browser can't use websockets
   }
-
-  resize();
-  $(window).resize(resize);
 });
 
 
@@ -50,11 +62,7 @@ function update(array){
 }
 
 function resize(){
-  $('body').width(document.body.clientWidth);
-  $('body').height(document.body.clientHeight);
-
-/*  widthRatio = document.body.clientWidth / standartWidth;
-  heightRatio = document.body.clientHeight / standartHeight;*/
+  resizeCanvas();
 }
 
 
