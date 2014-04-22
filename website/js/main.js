@@ -56,11 +56,15 @@ $(window).ready(function(){
 });
 
 
+
 function update(array){
   if(playerId > 0 ){
     offsetX = objects[playerId].x - standartWidth / 2;
     offsetY = objects[playerId].y - standartHeight / 2;
   }
+
+  checkMap();
+
 }
 
 function resize(){
@@ -192,8 +196,37 @@ function getNewId(){
 
 }
 
+
+function checkMap(){
+
+  currentX = lowerTo(offsetX, standartWidth);
+  currentY = lowerTo(offsetY, standartHeight);
+
+
+  if(mapState.current != currentX+","+currentY){
+
+    for(var x = -1; x < 2; x++){
+      for(var y = -1; y < 2; y++){
+
+        if(mapState.loaded[ (currentX - (standartWidth * x)) +","+ (currentY - (standartHeight * y)) ] == null ){
+          getMap((currentX - (standartWidth * x)) +","+ (currentY - (standartHeight * y)));
+        }
+      }
+    }
+
+    mapState.current = currentX+","+currentY;
+  }
+}
+
+function lowerTo(number, target){
+  var temp = number / target;
+  temp = Math.floor(temp);
+
+  return temp * target
+}
+
+
 function loadMap(map){
-  console.log(map);
 
   for(obj in map.objects){
     obj = map.objects[obj];
@@ -211,20 +244,12 @@ function loadMap(map){
 
 }
 
-function getMap(){
 
+function getMap(cord){
 
+  console.log("Loading map: "+cord);
 
-  sendUTF('{"type":"getMap","cords":"-1920,-1080" }');
-  sendUTF('{"type":"getMap","cords":"-1920,0" }');
-  sendUTF('{"type":"getMap","cords":"-1920,1080" }');
+  mapState.loaded[cord] = "loading";
+  sendUTF('{"type":"getMap","cords":"'+cord+'" }');
 
-
-  sendUTF('{"type":"getMap","cords":"0,-1080" }');
-  sendUTF('{"type":"getMap","cords":"0,0" }');
-  sendUTF('{"type":"getMap","cords":"0,1080" }');
-
-  sendUTF('{"type":"getMap","cords":"1920,-1080" }');
-  sendUTF('{"type":"getMap","cords":"1920,0" }');
-  sendUTF('{"type":"getMap","cords":"1920,1080" }');
 }

@@ -6,7 +6,7 @@ var connection;
 var canvas;
 var mapTiles = {};
 var canvasElements = {};
-var drawSpeed = 10;
+var drawSpeed = 20;
 
 var drawHitBox = true;
 
@@ -30,3 +30,8 @@ var useTimeStamps = false;
 
 var offsetX = 0;
 var offestY = 0;
+
+var mapState = {
+  "loaded":{},
+  "current":""
+}
