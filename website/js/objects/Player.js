@@ -5,9 +5,9 @@ var Player = function(id,x,y){
 
   this.color = "#"+id.toString().substring(0,3);
 
-  this.width = 100;
-  this.height = 100;
-  this.radius = 50;
+  this.width = 50;
+  this.height = 50;
+  this.radius = 20;
 
 
   Player.superclass.constructor.call(this,{

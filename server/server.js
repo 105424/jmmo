@@ -165,13 +165,12 @@ wsServer.on('request', function(request) {
         if(msg.type == "getMap")
         {
 
-          if( (msg.x % 1920) != 0 && (msg.y % 1080) != 0 ){
-            var mapData = map[msg.x+","+msg.y];
-            
-            var message = { "type":"mapData" };
-            message.map = mapData;
+          if( map[msg.cords] ) {
 
-            sendUTF(JSON.stringify(message));
+            var message = { "type":"mapData" };
+            message.map = map[msg.cords];
+
+            sendUTF(user.id, JSON.stringify(message));
 
           }else{
             console.log("The requested cordinates where not a map cordinate. x: "+msg.x+" y:"+msg.y);
@@ -294,21 +293,36 @@ function emptyStackFromUser(userId){
 
 function autoGenerateMap(){
   
-  for (var y = -20; y < 20; y++) {
-    for (var x = -20; x < 20; x++) { 
+  for (var y = -5; y < 5; y++) {
+    for (var x = -5; x < 5; x++) { 
 
-      tileMap = new Map(x*1920, y*1080);
+      var tileMap = new Map(x*1920, y*1080);
+
+
+      var tiles = {};
+
+      for(var f1 = 0; f1 < 10; f1++){
+        for(var f2 = 0; f2 < 10; f2++){
+          tiles[f1*192+","+f2*108] = {
+            'x':f1*192,
+            'y':f2*108,
+            "image":"tile-1"
+          }
+        }
+      }
+
+      tileMap['tiles'] = tiles;
 
       for(var i = 0; i < 5; i++){
 
         tX = Math.floor((Math.random()*1920)+1);
-        tY= Math.floor((Math.random()*1080)+1);
+        tY = Math.floor((Math.random()*1080)+1);
 
         tileMap.objects.push(
           {
             "type":"rock",
-            "x":x,
-            "y":y
+            "x":tX,
+            "y":tY
           }
         );
       }

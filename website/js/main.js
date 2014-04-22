@@ -40,6 +40,8 @@ $(window).ready(function(){
       inputHandlers();
       initCanvas();
 
+      getMap();
+
       resize();
       $(window).resize(resize);
 
@@ -188,4 +190,41 @@ function getNewId(){
 
   return id;
 
+}
+
+function loadMap(map){
+  console.log(map);
+
+  for(obj in map.objects){
+    obj = map.objects[obj];
+
+    if(obj.type == "rock"){
+      new Rock(obj.x + map.x, obj.y + map.y);
+    }
+
+  }
+
+  for(tile in map.tiles){
+    tile = map.tiles[tile];
+    new MapTile(map.x + tile.x, map.y + tile.y, tile.image)
+  }
+
+}
+
+function getMap(){
+
+
+
+  sendUTF('{"type":"getMap","cords":"-1920,-1080" }');
+  sendUTF('{"type":"getMap","cords":"-1920,0" }');
+  sendUTF('{"type":"getMap","cords":"-1920,1080" }');
+
+
+  sendUTF('{"type":"getMap","cords":"0,-1080" }');
+  sendUTF('{"type":"getMap","cords":"0,0" }');
+  sendUTF('{"type":"getMap","cords":"0,1080" }');
+
+  sendUTF('{"type":"getMap","cords":"1920,-1080" }');
+  sendUTF('{"type":"getMap","cords":"1920,0" }');
+  sendUTF('{"type":"getMap","cords":"1920,1080" }');
 }

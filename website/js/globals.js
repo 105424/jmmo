@@ -4,6 +4,7 @@ var addres = "localhost";
 var connection;
 
 var canvas;
+var mapTiles = {};
 var canvasElements = {};
 var drawSpeed = 10;
 

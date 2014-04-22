@@ -20,9 +20,19 @@ function updateCanvas(){
 
   canvasContext.clearRect(0,0,canvas.width,canvas.height)
 
+  for(element in mapTiles){
+     element = mapTiles[element];
+     canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY, element.width, element.height);
+  }
+
+
   for(element in canvasElements){
     element = canvasElements[element];
-    canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY, element.width, element.height);
+
+    elX = (element.x - element.width / 2 ) - offsetX;
+    elY = (element.y - element.height / 2 ) - offsetY;
+
+    canvasContext.drawImage(element.img , elX, elY, element.width, element.height);
 
 
     if(drawHitBox){

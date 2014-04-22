@@ -94,8 +94,9 @@ function Connection(callback)
         {
           objects[msg.user.id].die();
         }     
-
-
+        if(msg.type == 'mapData'){
+          loadMap(msg.map);
+        }
       }
     }else console.log("invallid json: "+message.data);
   }
