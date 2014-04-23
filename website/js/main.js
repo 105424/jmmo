@@ -265,6 +265,10 @@ function dropMap(cord){
     mapState.loaded[cord].objects[objId].quit();
   }
 
+  for(objId in mapState.loaded[cord].enemies){
+    mapState.loaded[cord].enemies[objId].quit();
+  }
+
   delete mapState.loaded[cord];
 }
 
