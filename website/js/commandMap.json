@@ -18,6 +18,17 @@
     "left",
     "position",
     "move",
-    "timeStamp"
+    "timeStamp",
+    "image",
+    "tile-1",
+    "spriteGod",
+    "rock",
+    "cords",
+    "getMap",
+    "enemies",
+    "map",
+    "mapData",
+    "npcs",
+    "objects"
   ]
 }

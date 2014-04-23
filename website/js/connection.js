@@ -135,13 +135,16 @@ function sendUTF(msg){
   }
 
   commandMap.commands.forEach(function(command, key){
-    msg = msg.replace('"'+command+'"','"'+key+'"');
-  });
+    var find = '"'+command+'"';
+    var re = new RegExp(find, 'g');
+
+    msg = msg.replace(re,'"'+key+'"');  });
 
   addToStack(msg);
 }
 
 function parseMsg(msg){
+
   commandMap.commands.forEach(function(command, key){
     var find = '"'+key+'"';
     var re = new RegExp(find, 'g');

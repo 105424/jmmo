@@ -212,13 +212,19 @@ function sendUTF(userId, msg){
   }
 
   globals.commandMap.commands.forEach(function(command, key){
-    msg = msg.replace('"'+command+'"','"'+key+'"');
+
+
+    var find = '"'+command+'"';
+    var re = new RegExp(find, 'g');
+
+    msg = msg.replace(re,'"'+key+'"');
   });
 
   addToStack(userId, msg);
 }
 
 function parseMsg(msg){
+
   globals.commandMap.commands.forEach(function(command, key){
 
     var find = '"'+key+'"';
@@ -276,8 +282,8 @@ function emptyStackFromUser(userId){
 
 function autoGenerateMap(){
   
-  for (var y = -20; y < 20; y++) {
-    for (var x = -20; x < 20; x++) { 
+  for (var y = -5; y < 5; y++) {
+    for (var x = -5; x < 5; x++) { 
 
       var tileMap = new Map(x*1920, y*1080);
 
