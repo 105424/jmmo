@@ -27,6 +27,8 @@ var Bullet = function(x, y, spdX, spdY, shotee){
 
   this.ownerId = shotee;
 
+  
+
 };
 extend(Bullet, DrawableObject);
 

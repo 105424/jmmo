@@ -2,13 +2,13 @@ var SpriteStar = function(x, y, spdX, spdY, shotee){
 
   this.id = getNewId();
 
-  this.image = "SpriteStar";
+  this.image = "spriteStar";
 
-  this.faction = objects[shotee].faction;
+  this.faction = shotee.faction;
 
   this.width = 100;
   this.height = 100;
-  this.radius = 50;
+  this.radius = 40;
 
   SpriteStar.superclass.constructor.call(this,{
     "id":this.id,
@@ -25,6 +25,8 @@ var SpriteStar = function(x, y, spdX, spdY, shotee){
   this.range = 1000;
   this.ownerId = shotee;
 
+  
+
 };
 extend(SpriteStar, DrawableObject);
 
@@ -33,7 +35,7 @@ SpriteStar.prototype.update = function(){
 
   if( Math.abs( this.x - this.startX) + Math.abs(this.y - this.startY)  > this.range){
     this.quit();
-  } 
+  }
 
 }
 

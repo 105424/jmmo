@@ -11,6 +11,9 @@ var DrawableObject = function(args){
   }
 
   this.intrs = [];
+  this.intrs["move"] = [];
+  this.intrs["shoot"] = [];
+  
   this.img = document.createElement('img');
 
   this.addToWindow(this,function(){
@@ -21,6 +24,7 @@ var DrawableObject = function(args){
     
     this.intrs['update'] = setInterval(this.update.bind(this) ,updateSpeed,this);
   
+
   }.bind(this));
 }
 
@@ -58,4 +62,24 @@ DrawableObject.prototype.quit = function(){
 
   delete canvasElements[this.id];
   delete objects[this.id];
+}
+
+DrawableObject.prototype.collisionCheck = function(){
+
+  for(id in objects){
+    var obj = objects[id];
+    if(id != this.id && obj.faction != "static" && obj.faction != this.faction){
+
+      var xD = Math.abs(obj.x - this.x);
+      if(xD < this.width){
+        var yD = Math.abs(obj.y - this.y);
+        if(yD < this.height){
+          if ( xD + yD < obj.radius + this.radius ){
+            obj.hasHit(this.id);
+            this.wasHit(obj);
+          }
+        }
+      }
+    }
+  }
 }

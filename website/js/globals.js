@@ -8,7 +8,7 @@ var mapTiles = {};
 var canvasElements = {};
 var drawSpeed = 20;
 
-var drawHitBox = true;
+var drawHitBox = false;
 
 var objects = {};
 
@@ -20,6 +20,7 @@ var heightRatio;
 var standartPlayerMaxSpeed = 10;
 var standartPlayerBulletSpeed = 15;
 var standartPlayerAccSpeed = 2;
+var standartPlayerShootSpeed = 100;
 
 var updateSpeed = 20;
 
@@ -40,3 +41,5 @@ var images = {};
 
 var messageStack = [];
 var stackSpeed = 50;
+
+var collisionCheckSpeed = 80;

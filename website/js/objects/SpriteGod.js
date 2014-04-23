@@ -18,11 +18,17 @@ var SpriteGod = function(id,x,y){
 
   this.maxSpd = 8;
   this.bulletSpeed = 15;
+  this.shootSpeed = 500;
 
   this.bulletType = SpriteStar;
 
-  this.intrs["move"] = [];
-  this.intrs["shoot"] = [];
+
+  this.shoot("up","start");
+  this.shoot("left","start");
+  this.shoot("down","start");
+  this.shoot("right","start");
+
+  this.intrs['collison'] = setInterval(this.collisionCheck.bind(this),collisionCheckSpeed);
 
 };
 extend(SpriteGod, DrawableObject);
@@ -83,36 +89,21 @@ SpriteGod.prototype.shoot = function(direction, action, x, y){
     this.intrs["shoot"][direction] = setInterval(function(direction){
 
       if(direction == "up")
-        new this.bulletType(this.x, this.y, 0, -this.bulletSpeed, this.id);
+        new this.bulletType(this.x, this.y, 0, -this.bulletSpeed, this);
       if(direction == "right")
-        new this.bulletType(this.x, this.y, this.bulletSpeed, 0, this.id);
+        new this.bulletType(this.x, this.y, this.bulletSpeed, 0, this);
       if(direction == "down")
-        new this.bulletType(this.x, this.y, 0, this.bulletSpeed, this.id);
+        new this.bulletType(this.x, this.y, 0, this.bulletSpeed, this);
       if(direction == "left")
-        new this.bulletType(this.x, this.y, -this.bulletSpeed, 0, this.id);
+        new this.bulletType(this.x, this.y, -this.bulletSpeed, 0, this);
       
-    }.bind(this),100,direction);
+    }.bind(this),this.shootSpeed,direction);
   }
 
   if(action == "stop"){
     clearInterval(this.intrs["shoot"][direction]);
     this.intrs["shoot"][direction] = null;
   }
-
-}
-
-SpriteGod.prototype.update = function(){
-   Player.superclass.update.call(this);
-
-    for(id in objects){
-
-      if(id != this.id && objects[id].faction != this.faction && objects[id].faction != "static"){
-        if ( Math.abs(objects[id].x - this.x) + Math.abs(objects[id].y - this.y) < objects[id].radius + this.radius ){
-          objects[id].hasHit(this.id);
-          this.wasHit(id);
-        }
-      }
-    }
 
 }
 

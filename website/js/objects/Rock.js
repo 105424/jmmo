@@ -16,6 +16,8 @@ var Rock = function(x,y){
 
   this.faction = "static";
 
+  this.intrs['collison'] = setInterval(this.collisionCheck.bind(this),collisionCheckSpeed);
+
 }
 extend(Rock, DrawableObject);
 
@@ -23,17 +25,6 @@ Rock.prototype.hasHit = function(objectId){
 
 }
 
-Rock.prototype.update = function(){
-  Rock.superclass.update.call(this);
-
-  for(id in objects){
-    if(id != this.id && objects[id].ownerId != this.id){ // FOR TESTING ONLY
-      if ( Math.abs(objects[id].x - this.x) + Math.abs(objects[id].y - this.y) < objects[id].radius + this.radius ){
-        objects[id].hasHit(this.id);
-      }
-    }
-  }
-}
 
 Rock.prototype.wasHit = function(objectId){
 

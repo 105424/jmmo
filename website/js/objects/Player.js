@@ -24,9 +24,12 @@ var Player = function(id,x,y){
   this.spdY;
 
   this.bulletSpeed = standartPlayerBulletSpeed;
+  this.shootSpeed = standartPlayerShootSpeed;
 
   this.intrs["move"] = [];
   this.intrs["shoot"] = [];
+
+  this.intrs['collison'] = setInterval(this.collisionCheck.bind(this),collisionCheckSpeed);
 
 };
 extend(Player, DrawableObject);
@@ -95,28 +98,13 @@ Player.prototype.shoot = function(direction, action, x, y){
       if(direction == "left")
         new Bullet(this.x, this.y, -this.bulletSpeed, 0, this.id);
       
-    }.bind(this),100,direction);
+    }.bind(this),this.shootSpeed,direction);
   }
 
   if(action == "stop"){
     clearInterval(this.intrs["shoot"][direction]);
     this.intrs["shoot"][direction] = null;
   }
-
-}
-
-Player.prototype.update = function(){
-   Player.superclass.update.call(this);
-
-    for(id in objects){
-
-      if(id != this.id && objects[id].faction != this.faction && objects[id].faction != "static"){
-        if ( Math.abs(objects[id].x - this.x) + Math.abs(objects[id].y - this.y) < objects[id].radius + this.radius ){
-          objects[id].hasHit(this.id);
-          this.wasHit(id);
-        }
-      }
-    }
 
 }
 
