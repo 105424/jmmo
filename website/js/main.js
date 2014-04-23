@@ -11,28 +11,6 @@ $(window).ready(function(){
     offsetX = 0;
     offsetY = 0;
 
-
-    /* This should really be refactord. */
-/*    defineSvg("bullet",function(){
-      defineSvg("circle", function(){
-        defineSvg("girlface", function(){
-          defineSvg("hitText", function(){
-            defineSvg("rock", function(){
-              getCommandMap(function(map){
-                commandMap = map;
-
-                Connection(function(){ //Starts the Connection (js/Connection)
-                  inputHandlers();
-                  setInterval(update, updateSpeed);
-                });
-                      
-              });
-            })
-          })
-        })
-      })
-    });*/
-
   getCommandMap(function(map){
     commandMap = map;
 
@@ -109,27 +87,6 @@ function clearIntertvalArray(array){
   
   }
 
-}
-
-function defineSvg(imageName, callback){
-
-  var xhr = new XMLHttpRequest;
-  xhr.open('get',"images/"+imageName+".svg",true);
-  xhr.onreadystatechange = function(){
-    if (xhr.readyState == 4){
-      var svg = xhr.responseXML.documentElement;
-
-      dom = document.createElementNS("http://www.w3.org/2000/svg","g");
-      dom.setAttribute("id",imageName);
-
-      $(dom).append($(svg).children());
-      
-      $("#defs").append(dom);
-
-      callback();
-    }
-  };
-  xhr.send();
 }
 
 
