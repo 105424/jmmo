@@ -11,6 +11,9 @@ var HitText = function(x,y,dmg){
     "hard":false
   });
 
+
+  //console.log("update");
+
   this.creation = new Date().getTime();
 
 }

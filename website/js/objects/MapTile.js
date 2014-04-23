@@ -26,7 +26,7 @@ MapTile.prototype.addToWindow = function(parent, callback) {
 
     images[parent.image+"."+parent.imageType].onload = function(){
       parent.update();
-      MapTiles[parent.id] = parent;
+      mapTiles[parent.id] = parent;
       callback();
     }
 

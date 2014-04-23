@@ -110,9 +110,8 @@ Player.prototype.update = function(){
 
     for(id in objects){
 
-      if(id != this.id && objects[id].faction != this.faction){
+      if(id != this.id && objects[id].faction != this.faction && objects[id].faction != "static"){
         if ( Math.abs(objects[id].x - this.x) + Math.abs(objects[id].y - this.y) < objects[id].radius + this.radius ){
-          console.log("hit");
           objects[id].hasHit(this.id);
           this.wasHit(id);
         }
