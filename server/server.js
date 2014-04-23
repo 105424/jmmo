@@ -10,29 +10,6 @@ var map = globals.map;
 
 var enemies = globals.enemies;
 
-/*
-  
-    x altijd deelbaar door 1920
-    y altijd deelbaat door 1080
-
-  {
-    "x,y":{
-     "users": [],
-     "npcs": [],
-     "enemies" : []
-    }
-
-    "x,y":[ objects ],
-    "x,y":[ objects ],
-    "x,y":[ objects ],
-    "x,y":[ objects ],
-    "x,y":[ objects ],
-    "x,y":[ objects ],
-  }
-
-*/
-
-
 var messageStack = {};
 
 var Map = function(x,y){
@@ -136,45 +113,50 @@ wsServer.on('request', function(request) {
       console.log('Received Message from '+user.id);
       if(isJson(message.utf8Data))
       {
-        var msg = parseMsg(message.utf8Data);
-        msg = JSON.parse(msg);
 
-        if(msg.type=="move")
-        {
-          //console.log(user.id+" move action: "+msg.action+" to: "+msg.direction);
-          toAll(
-            '{"type":"move","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
-            user.id
-          );
+        var msgArray = JSON.parse(parseMsg(message.utf8Data));
 
-          user.x = msg.position.x;
-          user.y = msg.position.y;
-        }
+        for (key in msgArray){
+          
+          var msg = msgArray[key];
 
-        if(msg.type == "shoot")
-        {
-          toAll(
-            '{"type":"shoot","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
-            user.id
-          );
-          user.x = msg.position.x;
-          user.y = msg.position.y;
-        }
+          if(msg.type=="move")
+          {
+            //console.log(user.id+" move action: "+msg.action+" to: "+msg.direction);
+            toAll(
+              '{"type":"move","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
+              user.id
+            );
 
-        if(msg.type == "getMap")
-        {
-
-          if( map[msg.cords] ) {
-
-            var message = { "type":"mapData" };
-            message.map = map[msg.cords];
-
-            sendUTF(user.id, JSON.stringify(message));
-
-          }else{
-            console.log("The requested cordinates where not a map cordinate. x: "+msg.x+" y:"+msg.y);
+            user.x = msg.position.x;
+            user.y = msg.position.y;
           }
-        }        
+
+          if(msg.type == "shoot")
+          {
+            toAll(
+              '{"type":"shoot","id":"'+user.id+'","action":"'+msg.action+'","direction":"'+msg.direction+'","position":{"x":'+msg.position.x+',"y":'+msg.position.y+'} }',
+              user.id
+            );
+            user.x = msg.position.x;
+            user.y = msg.position.y;
+          }
+
+          if(msg.type == "getMap")
+          {
+
+            if( map[msg.cords] ) {
+
+              var message = { "type":"mapData" };
+              message.map = map[msg.cords];
+
+              sendUTF(user.id, JSON.stringify(message));
+
+            }else{
+              console.log("The requested cordinates where not a map cordinate. x: "+msg.x+" y:"+msg.y);
+            }
+          }    
+        }    
       } else console.log("invalid json: "+message.utf8Data);
     }
   });
@@ -274,12 +256,14 @@ function emptyStack(){
       continue;
     }
 
-    message = [];
-    messageStack[userId].forEach(function(msg){
-      message.push(JSON.parse(msg));
-    });
+    if(messageStack[userId].length > 0 ){
+      message = [];
+      messageStack[userId].forEach(function(msg){
+        message.push(JSON.parse(msg));
+      });
 
-    users[userId].connection.sendUTF(JSON.stringify(message));
+      users[userId].connection.sendUTF(JSON.stringify(message));
+    }
   }
 
   messageStack = {};

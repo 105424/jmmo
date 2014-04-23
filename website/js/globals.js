@@ -37,3 +37,6 @@ var mapState = {
 }
 
 var images = {};
+
+var messageStack = [];
+var stackSpeed = 50;

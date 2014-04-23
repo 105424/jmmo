@@ -40,6 +40,7 @@ $(window).ready(function(){
       inputHandlers();
       initCanvas();
 
+      setStackInterval();
       getMap();
 
       resize();
@@ -88,32 +89,6 @@ function getRandomColor() {
       color += letters[Math.round(Math.random() * 15)];
     }
     return color;
-}
-
-function sendUTF(msg){
-
-  if(useTimeStamps){
-    msg = JSON.parse(msg);
-    msg.timeStamp = new Date().getTime();
-    msg = JSON.stringify(msg);
-  }
-
-  commandMap.commands.forEach(function(command, key){
-    msg = msg.replace('"'+command+'"','"'+key+'"');
-  });
-
-  connection.send(msg);
-}
-
-function parseMsg(msg){
-  commandMap.commands.forEach(function(command, key){
-    var find = '"'+key+'"';
-    var re = new RegExp(find, 'g');
-
-    msg = msg.replace(re,'"'+command+'"');
-  });
-
-  return msg;
 }
 
 function getCommandMap(callback){

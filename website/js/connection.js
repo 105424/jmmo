@@ -4,7 +4,6 @@ function Connection(callback)
   console.log("connection to: "+'ws://'+addres+':'+port);
   connection = new WebSocket('ws://'+addres+':'+port);
 
-
   connection.onopen = function(){ 
 
     if(callback){
@@ -12,21 +11,24 @@ function Connection(callback)
     }
 
   }
+
   connection.onclose = function(){
     console.log('Connection closed');
   }
+
   connection.onerror = function(error){
     console.log('Error detected: ');
     console.log(error);
-  }    
+  }
+
   connection.onmessage = function (message) { 
     if(isJson(message.data))
     {
-      msgArray = JSON.parse(parseMsg(message.data));
+      var msgArray = JSON.parse(parseMsg(message.data));
 
       for (key in msgArray){
         
-        msg = msgArray[key];
+        var msg = msgArray[key];
 
         if(useTimeStamps){
           delay = new Date().getTime() - msg.timeStamp;
@@ -102,9 +104,50 @@ function Connection(callback)
   }
 }
 
+function setStackInterval(){
+  setInterval(emptyStack, stackSpeed);
+}
 
+function addToStack(msg){
+  messageStack.push(msg);
+}
 
+function emptyStack(){
 
+  if(messageStack.length > 0){
+    var message = [];
+    messageStack.forEach(function(msg){
+      message.push(JSON.parse(msg));
+    });
 
+    connection.send(JSON.stringify(message));
 
+    messageStack = [];
+  }
+}
 
+function sendUTF(msg){
+
+  if(useTimeStamps){
+    msg = JSON.parse(msg);
+    msg.timeStamp = new Date().getTime();
+    msg = JSON.stringify(msg);
+  }
+
+  commandMap.commands.forEach(function(command, key){
+    msg = msg.replace('"'+command+'"','"'+key+'"');
+  });
+
+  addToStack(msg);
+}
+
+function parseMsg(msg){
+  commandMap.commands.forEach(function(command, key){
+    var find = '"'+key+'"';
+    var re = new RegExp(find, 'g');
+
+    msg = msg.replace(re,'"'+command+'"');
+  });
+
+  return msg;
+}
