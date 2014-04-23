@@ -121,6 +121,5 @@ SpriteGod.prototype.hasHit = function(objectId){
 }
 
 SpriteGod.prototype.wasHit = function(objectId){
-
-  new HitText(this.x, this.y,"-100");
+  new HitText(this.x, this.y - this.width /4 ,"-100");
 }
