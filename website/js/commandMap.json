@@ -29,6 +29,9 @@
     "map",
     "mapData",
     "npcs",
-    "objects"
+    "objects",
+    "enemyHit",
+    "dmg",
+    "death"
   ]
 }

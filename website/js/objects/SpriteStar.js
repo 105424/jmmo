@@ -10,6 +10,9 @@ var SpriteStar = function(x, y, spdX, spdY, shotee){
   this.height = 100;
   this.radius = 40;
 
+
+  this.dmg = 100;
+
   SpriteStar.superclass.constructor.call(this,{
     "id":this.id,
     "x":x,
@@ -25,8 +28,6 @@ var SpriteStar = function(x, y, spdX, spdY, shotee){
   this.range = 1000;
   this.ownerId = shotee;
 
-  
-
 };
 extend(SpriteStar, DrawableObject);
 
@@ -39,6 +40,6 @@ SpriteStar.prototype.update = function(){
 
 }
 
-SpriteStar.prototype.hasHit = function(objectId){
+SpriteStar.prototype.hasHit = function(object){
   this.quit();
 }

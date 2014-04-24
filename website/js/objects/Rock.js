@@ -21,11 +21,11 @@ var Rock = function(x,y){
 }
 extend(Rock, DrawableObject);
 
-Rock.prototype.hasHit = function(objectId){
+Rock.prototype.hasHit = function(object){
 
 }
 
 
-Rock.prototype.wasHit = function(objectId){
+Rock.prototype.wasHit = function(object){
 
 }

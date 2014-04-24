@@ -78,6 +78,11 @@ DrawableObject.prototype.update = function(){
 
 }
 
+
+DrawableObject.prototype.die = function(){
+  this.quit();
+}
+
 DrawableObject.prototype.quit = function(){
 
   clearIntertvalArray(this.intrs);
@@ -97,7 +102,7 @@ DrawableObject.prototype.collisionCheck = function(){
     var obj = collisionMap[this.chunk][id];
     if(id != this.id && obj.faction != "static" && obj.faction != this.faction){
       if ( Math.abs(obj.x - this.x) + Math.abs(obj.y - this.y) < obj.radius + this.radius ){
-        obj.hasHit(this.id);
+        obj.hasHit(this);
         this.wasHit(obj);
       }
     }
