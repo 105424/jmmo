@@ -16,4 +16,4 @@ this.map = {};
 
 this.enemies = {};
 
-this.mapSize = 20;
+this.mapSize = 2;

@@ -67,7 +67,7 @@ var User = function(){
 
 }; 
 
-var Enemy = function(type, x,y,hp){
+var Enemy = function(type, x, y, hp){
   this.id = generateId();
 
   this.type = type;
@@ -78,10 +78,6 @@ var Enemy = function(type, x,y,hp){
 
   enemies[this.id] = this;
 
-  this.getChunk = function(){
-    return lowerTo(this.x, 1920)+","+lowerTo(this.y, 1080);
-  }
-
   this.quit = function(){
 
     console.log("quiting: "+this.id);
@@ -91,11 +87,12 @@ var Enemy = function(type, x,y,hp){
     msg.id = this.id;
 
     toAll(JSON.stringify(msg));
+
+    delete enemies[this.id];
+    delete map[this.chunk].enemies[this.id];
   }
 
   this.hit = function(dmg){
-
-    //console.log(this.hp);
 
     this.hp = this.hp - dmg;
 
@@ -394,7 +391,10 @@ function autoGenerateMap(){
         var tX = Math.floor((Math.random()*1920)+1);
         var tY = Math.floor((Math.random()*1080)+1);
 
-        var enemy = new Enemy("spriteGod",tX,tY,2000); 
+        var enemy = new Enemy("spriteGod", tX, tY, 2000); 
+
+        /* SHOULD BE FIXED THE enemy.getchunk() because this wil only work for non moving enemies (kinda) */
+        enemy.chunk = x*1920+","+y*1080;
 
         tileMap.enemies[enemy.id] = enemy;
       }
