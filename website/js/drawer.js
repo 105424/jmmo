@@ -92,9 +92,6 @@ function drawGui(canvasContext){
   }else{
     var playerHp = objects[playerId].hp;
 
-    console.log(playerHp);
-
-
     var hearts = Math.round( playerHp / 100);
 
     var x = 0;

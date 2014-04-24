@@ -2,6 +2,8 @@ var SpriteStar = function(x, y, spdX, spdY, shotee){
 
   this.id = getNewId();
 
+  this.type = "bullet";
+
   this.image = "spriteStar";
 
   this.faction = shotee.faction;
