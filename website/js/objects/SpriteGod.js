@@ -18,7 +18,7 @@ var SpriteGod = function(id,x,y){
 
   this.maxSpd = 8;
   this.bulletSpeed = 15;
-  this.shootSpeed = 10;
+  this.shootSpeed = 200;
 
   this.bulletType = SpriteStar;
 
