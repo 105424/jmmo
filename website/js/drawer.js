@@ -26,7 +26,7 @@ function updateCanvas(){
     distanceFromCenterX = Math.abs(element.x - offsetX - standartWidth /2);
     distanceFromCenterY = Math.abs(element.y - offsetY - standartHeight / 2);
 
-    if( distanceFromCenterX < (standartWidth / 2) + 192 && distanceFromCenterY < (standartHeight / 2) + 108 ){
+    if( distanceFromCenterX < (standartWidth / 2) - 192 && distanceFromCenterY < (standartHeight / 2) - 108 ){
       canvasContext.drawImage(element.img ,element.x - offsetX, element.y - offsetY, element.width, element.height);
     }
   }
@@ -41,7 +41,7 @@ function updateCanvas(){
     distanceFromCenterX = Math.abs(element.x - offsetX - standartWidth /2);
     distanceFromCenterY = Math.abs(element.y - offsetY - standartHeight / 2);
 
-    if( distanceFromCenterX < (standartWidth / 2) + 192 && distanceFromCenterY < (standartHeight / 2) + 108 ){
+    if( distanceFromCenterX < (standartWidth / 2) - 192 && distanceFromCenterY < (standartHeight / 2) - 108 ){
       canvasContext.drawImage(element.img , elX, elY, element.width, element.height);
       if(drawHitBox){
         canvasContext.beginPath();

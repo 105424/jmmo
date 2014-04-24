@@ -54,6 +54,28 @@ DrawableObject.prototype.update = function(){
 
   this.x = this.x + this.spdX;
   this.y = this.y + this.spdY;
+
+  if(this.hard){
+    var chunk = lowerTo(this.x, chunkSize) + "," + lowerTo(this.y, chunkSize);
+
+    if(this.chunk != chunk){
+
+      if(collisionMap[chunk] == null){
+        collisionMap[chunk] = {};
+      }
+
+      if(collisionMap[this.chunk]){
+        if(collisionMap[this.chunk][this.id]){
+          delete collisionMap[this.chunk][this.id];
+        }
+      }
+
+      collisionMap[chunk][this.id] = this;
+
+      this.chunk = chunk;
+    }
+  }
+
 }
 
 DrawableObject.prototype.quit = function(){
@@ -62,23 +84,21 @@ DrawableObject.prototype.quit = function(){
 
   delete canvasElements[this.id];
   delete objects[this.id];
+
+  if(this.hard){
+    delete collisionMap[this.chunk][this.id];
+  }
+
 }
 
 DrawableObject.prototype.collisionCheck = function(){
 
-  for(id in objects){
-    var obj = objects[id];
+  for(id in collisionMap[this.chunk]){
+    var obj = collisionMap[this.chunk][id];
     if(id != this.id && obj.faction != "static" && obj.faction != this.faction){
-
-      var xD = Math.abs(obj.x - this.x);
-      if(xD < this.width){
-        var yD = Math.abs(obj.y - this.y);
-        if(yD < this.height){
-          if ( xD + yD < obj.radius + this.radius ){
-            obj.hasHit(this.id);
-            this.wasHit(obj);
-          }
-        }
+      if ( Math.abs(obj.x - this.x) + Math.abs(obj.y - this.y) < obj.radius + this.radius ){
+        obj.hasHit(this.id);
+        this.wasHit(obj);
       }
     }
   }
