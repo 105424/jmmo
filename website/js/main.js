@@ -58,7 +58,25 @@ $(window).ready(function(){
 
 
 
+var lastUpdate = null;
+var wasLagging = 0;
+
 function update(array){
+  
+  var date =  new Date().getTime();
+
+  if(date - lastUpdate > updateSpeed * 2){
+    wasLagging++;
+    
+    if(wasLagging > 2){
+      lagging = true;
+      removeAllBullets();
+    }
+  }else{
+    wasLagging = 0;
+    lagging = false;
+  }
+
   if(playerId > 0 ){
     offsetX = objects[playerId].x - standartWidth / 2;
     offsetY = objects[playerId].y - standartHeight / 2;
@@ -66,6 +84,7 @@ function update(array){
 
   checkMap();
 
+  lastUpdate = date;
 }
 
 function resize(){
@@ -280,4 +299,17 @@ function getMap(cord){
   mapState.loaded[cord] = "loading";
   sendUTF('{"type":"getMap","cords":"'+cord+'" }');
 
+}
+
+function removeAllBullets(){
+
+  /* Not working yet */
+
+  console.log("removingAll");
+
+  for (var id in objects){
+    if( objects[id].type == "bullet" ){
+      objects[id].quit();
+    }
+  }
 }

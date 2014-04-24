@@ -23,6 +23,7 @@ var standartPlayerAccSpeed = 2;
 var standartPlayerShootSpeed = 100;
 
 var updateSpeed = 20;
+var collisionCheckSpeed = 20;
 
 var playerId;
 var commandMap;
@@ -42,4 +43,7 @@ var images = {};
 var messageStack = [];
 var stackSpeed = 50;
 
-var collisionCheckSpeed = 80;
+var chunkSize = 500;
+var collisionMap = {};
+
+var lagging;
