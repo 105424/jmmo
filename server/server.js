@@ -88,6 +88,14 @@ var Enemy = function(type, x, y, hp){
 
     toAll(JSON.stringify(msg));
 
+
+    if(enemies[this.id] == null){
+      console.log("couldn't find enemy in enemies: "+this.id);
+    }
+    if(map[this.chunk].enemies[this.id] == null){
+      console.log("couldn't find enemy in map: "+this.id);
+    }
+
     delete enemies[this.id];
     delete map[this.chunk].enemies[this.id];
   }
@@ -388,8 +396,8 @@ function autoGenerateMap(){
 
       for(var i = 0; i < 3; i++){
 
-        var tX = Math.floor((Math.random()*1920)+1);
-        var tY = Math.floor((Math.random()*1080)+1);
+        var tX = Math.floor((Math.random()*1900)+21);
+        var tY = Math.floor((Math.random()*1060)+21);
 
         var enemy = new Enemy("spriteGod", tX, tY, 2000); 
 
