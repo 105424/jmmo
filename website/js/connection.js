@@ -50,14 +50,14 @@ function Connection(callback)
 
           playerId = msg.user.id;
 
-          new Player(playerId,msg.user.x,msg.user.y).color = msg.user.color;
+          new Player(playerId,msg.user.x,msg.user.y, msg.user.hp);
         }
         if(msg.type=="newUser")
         {
           if(msg.user.id != playerId){
             console.log("--------New Player--------");
             console.log("New Player:"+msg.user.id);
-            new Player(msg.user.id, msg.user.x, msg.user.y).color = msg.user.color;
+            new Player(msg.user.id, msg.user.x, msg.user.y, msg.user.hp);
           }
         } 
         if(msg.type=="userQuit")

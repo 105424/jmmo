@@ -140,7 +140,7 @@ wsServer.on('request', function(request) {
   user.connection = request.accept(null, request.origin); 
   
   sendUTF(user.id, 
-    '{"type":"id", "user":{ "id":'+user.id+', "lvl":1, "hp":1000, "x":'+user.x+', "y":'+user.y+', "color":"'+user.color+'" } }'
+    '{"type":"id", "user":{ "id":'+user.id+', "lvl":1, "hp":'+user.hp+', "x":'+user.x+', "y":'+user.y+', "color":"'+user.color+'" } }'
   );
   
   var all  = {"type":"allUsers","users":[]};

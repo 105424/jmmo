@@ -6,6 +6,8 @@ var DrawableObject = function(args){
   this.hard = true; // Should it be stored in the objects array
   this.imageType = "svg";
 
+  this.hp = 0;
+
   for( key in args){
     this[key] = args[key];
   }

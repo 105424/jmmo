@@ -50,8 +50,9 @@ function updateCanvas(){
       }
 
     }
-
   }
+
+  drawGui(canvasContext);
 
 }
 
@@ -73,4 +74,36 @@ function resizeCanvas(){
 
   canvasContext.scale(widthRatio,heightRatio);
 
+}
+
+
+var canDrawGui = false;
+function drawGui(canvasContext){
+
+  if(!canDrawGui){
+    if(images["Heart1.gif"] == null){
+      images["Heart1.gif"] = document.createElement('img');
+      images["Heart1.gif"].src = 'images/Heart1.gif';
+
+     images["Heart1.gif"].onload = function(){
+        canDrawGui = true;
+      }
+    }
+  }else{
+    var playerHp = objects[playerId].hp;
+
+    console.log(playerHp);
+
+
+    var hearts = Math.round( playerHp / 100);
+
+    var x = 0;
+    var y = 0;
+
+    for (var i = 0 ; i < hearts; i++) {
+      canvasContext.drawImage(images["Heart1.gif"], x, y, 50, 50);
+
+      x += 50;
+    };
+  }
 }

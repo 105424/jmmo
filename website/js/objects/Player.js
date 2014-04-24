@@ -1,4 +1,4 @@
-var Player = function(id,x,y){
+var Player = function(id, x, y, hp){
 
   this.image = "wizard";
 
@@ -8,12 +8,12 @@ var Player = function(id,x,y){
   this.height = 50;
   this.radius = 20;
 
-
   Player.superclass.constructor.call(this,{
     "id":id,
     "x":x,
     "y":y,
-    "imageType":"png"
+    "imageType":"png",
+    "hp":hp
   });
 
   this.faction = "players";
@@ -129,6 +129,8 @@ Player.prototype.wasHit = function(object){
 
     sendUTF(JSON.stringify(msg));
   }
+
+  this.hp = this.hp - dmg;
 
   new HitText(this.x, this.y - this.width /4 ,"-100");
 
