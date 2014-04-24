@@ -127,7 +127,7 @@ Player.prototype.wasHit = function(object){
     msg.id = this.id;
     msg.dmg = dmg;
 
-    sendUTF(JSON.stringify(msg));
+  //  sendUTF(JSON.stringify(msg));
   }
 
   this.hp = this.hp - dmg;

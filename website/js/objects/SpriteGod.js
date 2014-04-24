@@ -116,7 +116,12 @@ SpriteGod.prototype.hasHit = function(object){
 
 SpriteGod.prototype.wasHit = function(object){
 
-  var dmg = object.dmg;
+  var dmg = 100;
+
+  if(object.dmg){
+    /* WHYY IS DAMGE SOMTIEMS UNDEFINED ???? */
+    dmg = object.dmg;
+  }
 
   if(object.type == "bullet"){
     object = objects[object.ownerId];

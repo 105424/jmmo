@@ -102,6 +102,11 @@ var Enemy = function(type, x, y, hp){
 
   this.hit = function(dmg){
 
+    if(dmg < 0){
+      /* WHYY IS THISS HAPPENINNNGGGGGGGG */
+      dmg = 100;
+    }
+
     this.hp = this.hp - dmg;
 
     if(this.hp < 0){
@@ -220,7 +225,6 @@ wsServer.on('request', function(request) {
           }
 
           if(msg.type == "enemyHit"){
-
             if(enemies[msg.id]){
               // Make sure the enemie wasnt dead before (inevitable lag shizzle)
               enemies[msg.id].hit(msg.dmg);
