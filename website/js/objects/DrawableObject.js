@@ -88,11 +88,34 @@ DrawableObject.prototype.die = function(){
 DrawableObject.prototype.quit = function(){
 
   clearIntertvalArray(this.intrs);
+/*
+  if(this.type == "enemy"){
+    if(canvasElements[this.id]){
+      console.log(this.id+" found in canvasElements");
+    }else{
+        console.log(this.id+" NOT found in canvasElements");
+    }
+
+    if(objects[this.id]){
+      console.log(this.id+" found in objects");
+    }else{
+        console.log(this.id+" NOT found in objects");
+    }
+  }*/
 
   delete canvasElements[this.id];
   delete objects[this.id];
 
   if(this.hard){
+    
+/*    if(this.type == "enemy"){
+      if(collisionMap[this.chunk][this.id]){
+        console.log(this.id+" found in collisionMap");
+      }else{
+        console.log(this.id+" NOT found in collisionMap");
+      }
+    }
+*/
     delete collisionMap[this.chunk][this.id];
   }
 

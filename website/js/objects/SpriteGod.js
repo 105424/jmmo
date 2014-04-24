@@ -16,6 +16,8 @@ var SpriteGod = function(id,x,y){
   });
 
   this.faction = "enemys";
+  this.type = "enemy";
+
 
   this.maxSpd = 8;
   this.bulletSpeed = 15;
@@ -117,7 +119,6 @@ SpriteGod.prototype.wasHit = function(object){
   var dmg = object.dmg;
 
   if(object.type == "bullet"){
-
     object = objects[object.ownerId];
   }
 
