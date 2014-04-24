@@ -307,9 +307,9 @@ function removeAllBullets(){
 
   console.log("removingAll");
 
-  for (var id in objects){
+/*  for (var id in objects){
     if( objects[id].type == "bullet" ){
       objects[id].quit();
     }
-  }
+  }*/
 }

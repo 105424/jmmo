@@ -18,7 +18,7 @@ var Map = function(x,y){
 
   this.users = [];
   this.npcs = [];
-  this.enemies = [];
+  this.enemies = {};
   this.objects = [];
   this.tiles = {};
 }
@@ -34,6 +34,37 @@ var User = function(){
   this.lvl = globals.startLvl;
   this.hp = globals.startHp;
 
+  users[this.id] = this;
+
+  this.getChunk = function(){
+    return lowerTo(this.x, 1920)+","+lowerTo(this.y, 1080);
+  }
+
+  this.die = function(){
+
+    console.log("dieing: "+this.id);
+
+    var msg = {};
+    msg.type = "death";
+    msg.id = this.id;
+
+    toAll(JSON.stringify(msg));
+
+    this.hp = globals.startHp;
+
+  }
+
+  this.hit = function(dmg){
+
+    this.hp = this.hp - dmg;
+
+    if(this.hp < 0){
+      this.die();
+    }
+
+  }
+
+
 }; 
 
 var Enemy = function(type, x,y,hp){
@@ -46,6 +77,34 @@ var Enemy = function(type, x,y,hp){
   this.hp = hp;
 
   enemies[this.id] = this;
+
+  this.getChunk = function(){
+    return lowerTo(this.x, 1920)+","+lowerTo(this.y, 1080);
+  }
+
+  this.quit = function(){
+
+    console.log("quiting: "+this.id);
+
+    var msg = {};
+    msg.type = "death";
+    msg.id = this.id;
+
+    toAll(JSON.stringify(msg));
+  }
+
+  this.hit = function(dmg){
+
+    //console.log(this.hp);
+
+    this.hp = this.hp - dmg;
+
+    if(this.hp < 0){
+      this.quit();
+    }
+
+  }
+
 }; 
 
 getCommandMap(function(map){
@@ -79,8 +138,6 @@ wsServer.on('request', function(request) {
 
   var user = new User();
   user.connection = request.accept(null, request.origin); 
-
-  users[user.id] = user;
   
   sendUTF(user.id, 
     '{"type":"id", "user":{ "id":'+user.id+', "lvl":1, "hp":1000, "x":'+user.x+', "y":'+user.y+', "color":"'+user.color+'" } }'
@@ -110,7 +167,7 @@ wsServer.on('request', function(request) {
   
   user.connection.on('message', function(message) {
     if(message.type=="utf8"){
-      console.log('Received Message from '+user.id);
+      //console.log('Received Message from '+user.id);
       if(isJson(message.utf8Data))
       {
 
@@ -155,7 +212,23 @@ wsServer.on('request', function(request) {
             }else{
               console.log("The requested cordinates where not a map cordinate. x: "+msg.x+" y:"+msg.y);
             }
-          }    
+          }
+
+          if(msg.type == "enemyHit"){
+
+            if(enemies[msg.id]){
+              // Make sure the enemie wasnt dead before (inevitable lag shizzle)
+              enemies[msg.id].hit(msg.dmg);
+            }
+          }
+          if(msg.type == "playerHit"){
+
+            if(users[msg.id]){
+              users[msg.id].hit(msg.dmg);
+            }
+
+          }
+
         }    
       } else console.log("invalid json: "+message.utf8Data);
     }
@@ -282,8 +355,8 @@ function emptyStackFromUser(userId){
 
 function autoGenerateMap(){
   
-  for (var y = -5; y < 5; y++) {
-    for (var x = -5; x < 5; x++) { 
+  for (var y = -globals.mapSize; y < globals.mapSize; y++) {
+    for (var x = -globals.mapSize; x < globals.mapSize; x++) { 
 
       var tileMap = new Map(x*1920, y*1080);
 
@@ -304,8 +377,8 @@ function autoGenerateMap(){
 
       for(var i = 0; i < 5; i++){
 
-        tX = Math.floor((Math.random()*1920)+1);
-        tY = Math.floor((Math.random()*1080)+1);
+        var tX = Math.floor((Math.random()*1920)+1);
+        var tY  = Math.floor((Math.random()*1080)+1);
 
         tileMap.objects.push(
           {
@@ -318,10 +391,12 @@ function autoGenerateMap(){
 
       for(var i = 0; i < 3; i++){
 
-        tX = Math.floor((Math.random()*1920)+1);
-        tY = Math.floor((Math.random()*1080)+1);
+        var tX = Math.floor((Math.random()*1920)+1);
+        var tY = Math.floor((Math.random()*1080)+1);
 
-        tileMap.enemies.push(new Enemy("spriteGod",tX,tY,2000));
+        var enemy = new Enemy("spriteGod",tX,tY,2000); 
+
+        tileMap.enemies[enemy.id] = enemy;
       }
 
 
@@ -353,4 +428,11 @@ function generateId(){
   }
 
   return id;
+}
+
+function lowerTo(number, target){
+  var temp = number / target;
+  temp = Math.floor(temp);
+
+  return temp * target
 }

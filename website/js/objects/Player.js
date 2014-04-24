@@ -108,11 +108,33 @@ Player.prototype.shoot = function(direction, action, x, y){
 
 }
 
-Player.prototype.hasHit = function(objectId){
+Player.prototype.hasHit = function(object){
 
 }
 
-Player.prototype.wasHit = function(objectId){
+Player.prototype.wasHit = function(object){
 
-  new HitText(this.x, this.y,"-100");
+  var dmg = object.dmg;
+
+  if(object.type == "bullet"){
+    object = objects[object.ownerId];
+  }
+
+  if(this.id == playerId){
+
+    var msg = {};
+    msg.type = "playerHit";
+    msg.id = this.id;
+    msg.dmg = dmg;
+
+    sendUTF(JSON.stringify(msg));
+  }
+
+  new HitText(this.x, this.y - this.width /4 ,"-100");
+
+}
+
+Player.prototype.die = function(){
+  this.x = 0;
+  this.y = 0;
 }

@@ -22,6 +22,7 @@ var standartPlayerBulletSpeed = 15;
 var standartPlayerAccSpeed = 2;
 var standartPlayerShootSpeed = 100;
 
+
 var updateSpeed = 20;
 var collisionCheckSpeed = 20;
 
@@ -45,5 +46,8 @@ var stackSpeed = 50;
 
 var chunkSize = 500;
 var collisionMap = {};
+
+var drawExtraSpaceX = 192;
+var drawExtraSpaceY = 108;
 
 var lagging;

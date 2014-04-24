@@ -6,6 +6,7 @@ var SpriteGod = function(id,x,y){
   this.height = 420;
   this.radius = 100;
 
+  this.dmg = 10;
 
   SpriteGod.superclass.constructor.call(this,{
     "id":id,
@@ -18,7 +19,7 @@ var SpriteGod = function(id,x,y){
 
   this.maxSpd = 8;
   this.bulletSpeed = 15;
-  this.shootSpeed = 200;
+  this.shootSpeed = 500;
 
   this.bulletType = SpriteStar;
 
@@ -107,10 +108,29 @@ SpriteGod.prototype.shoot = function(direction, action, x, y){
 
 }
 
-SpriteGod.prototype.hasHit = function(objectId){
+SpriteGod.prototype.hasHit = function(object){
 
 }
 
-SpriteGod.prototype.wasHit = function(objectId){
+SpriteGod.prototype.wasHit = function(object){
+
+  var dmg = object.dmg;
+
+  if(object.type == "bullet"){
+
+    object = objects[object.ownerId];
+  }
+
+  if(object.id == playerId){
+
+    var msg = {};
+    msg.type = "enemyHit";
+    msg.id = this.id;
+    msg.dmg = dmg;
+
+    sendUTF(JSON.stringify(msg));
+  }
+
   new HitText(this.x, this.y - this.width /4 ,"-100");
+
 }

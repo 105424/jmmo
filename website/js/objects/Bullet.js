@@ -11,6 +11,8 @@ var Bullet = function(x, y, spdX, spdY, shotee){
   this.height = 30;
   this.radius = 15;
 
+  this.dmg = 100;
+
   Bullet.superclass.constructor.call(this,{
     "id":this.id,
     "x":x,
@@ -42,6 +44,6 @@ Bullet.prototype.update = function(){
 
 }
 
-Bullet.prototype.hasHit = function(objectId){
+Bullet.prototype.hasHit = function(object){
   this.quit();
 }

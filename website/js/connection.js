@@ -94,8 +94,14 @@ function Connection(callback)
         }
         if(msg.type=="death")
         {
-          objects[msg.user.id].die();
+
+          console.log("killing:"+ msg.id);
+
+          if(objects[msg.id]){
+            objects[msg.id].die();
+          }
         }     
+
         if(msg.type == 'mapData'){
           loadMap(msg.map);
         }
