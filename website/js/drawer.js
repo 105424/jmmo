@@ -90,17 +90,19 @@ function drawGui(canvasContext){
       }
     }
   }else{
-    var playerHp = objects[playerId].hp;
-
-    var hearts = Math.round( playerHp / 100);
-
-    var x = 0;
-    var y = 0;
-
-    for (var i = 0 ; i < hearts; i++) {
-      canvasContext.drawImage(images["Heart1.gif"], x, y, 50, 50);
-
-      x += 50;
-    };
+    if(typeof objects[playerId] != 'undefined' && objects[playerId] != null )
+    {
+      var playerHp = objects[playerId].hp;
+  
+      var hearts = Math.round( playerHp / 100);
+  
+      var x = 0;
+      var y = 0;
+  
+      for (var i = 0 ; i < hearts; i++) {
+        canvasContext.drawImage(images["Heart1.gif"], x, y, 50, 50);
+        x += 50;
+      }; 
+    }
   }
 }
